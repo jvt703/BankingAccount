@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class AccountType {
     Long id;
-    String accountType; //TODO: rename this in database
+    String accountTypeName;
     String description;
 }
