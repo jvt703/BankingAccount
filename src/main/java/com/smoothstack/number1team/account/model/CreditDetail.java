@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreditDetail {
-    Long id;
-    Long accountId;
-    double interestRate;
-    double minimumPayment;
-    double creditLimit;
-    Long rewardsType;
+    private Long id;
+    private Long accountId;
+    private double interestRate;
+    private double minimumPayment;
+    private double creditLimit;
+    private Long rewardsType;
 }

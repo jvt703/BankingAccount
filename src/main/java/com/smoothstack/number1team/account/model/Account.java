@@ -6,13 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Account {
-    Long id;
-    Long userId;
-    Long accountTypeId;
-    double balance;
-    boolean confirmation; //TODO: ASK WHAT THIS DOES
-    boolean active;
-    Long pointsBalance;
-    String accountName;
-    Long createdDate;
+    private Long id;
+    private Long userId;
+    private Long accountTypeId;
+    private double balance;
+    private boolean confirmation; //TODO: POSSIBLY UNUSED
+    private boolean active;
+    private Long pointsBalance;
+    private String accountName;
+    private Long createdDate;
 }

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AccountType {
-    Long id;
-    String accountTypeName;
-    String description;
+    private Long id;
+    private String accountTypeName;
+    private String description;
 }

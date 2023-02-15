@@ -12,14 +12,14 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    double id;
+    private double id;
 
     @Column(name = "sourceAccount")
-    Account sourceAccount;
+    private Account sourceAccount;
 
     @Column(nullable = false, name = "destinationAccount")
-    Account destinationAccount;
+    private Account destinationAccount;
 
     @Column(nullable = false)
-    Long date;
+    private Long date;
 }

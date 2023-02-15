@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RewardsType {
-    double id;
-    String rewardsName; //TODO: fix capitalization in db
+    private double id;
+    private String rewardsName;
 }
