@@ -10,6 +10,5 @@ public class Card {
     Long accountId;
     boolean active;
     int pin;
-    String cardholderName; //TODO: ask about normalization (1 user to every card, user stores name)
     Long cardNumber;
 }
