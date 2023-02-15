@@ -8,7 +8,7 @@ import lombok.Setter;
 public class LoanDetail {
     Long id;
     Long accountId;
-    int interestRate; //TODO: ask why this is different from cardDetail interestRate (decimal)
+    double interestRate;
     double minimumPayment;
     double initialLoanAmount;
 }
