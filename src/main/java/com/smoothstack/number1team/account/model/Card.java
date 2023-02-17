@@ -17,10 +17,10 @@ public class Card {
     @Column(name = "accountId", nullable = false)
     private Long accountId;
 
-    @Column(name = "active", nullable = false)
+    @Column(nullable = false)
     private boolean active;
 
-    @Column(name = "pin", nullable = false)
+    @Column(nullable = false)
     private int pin;
 
     @Column(name = "cardNumber", nullable = false)

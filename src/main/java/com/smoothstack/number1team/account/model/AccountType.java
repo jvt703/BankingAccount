@@ -16,6 +16,5 @@ public class AccountType {
     @Column(nullable = false, name = "accountTypeName")
     private String accountTypeName;
 
-    @Column(name = "description") //TODO: ask if this should be non-nullable
     private String description;
 }

@@ -14,16 +14,15 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "userId", nullable = false) //TODO: use model? if needed
     private Long userId;
 
     @Column(name = "accountTypeId", nullable = false)
-    private Long accountTypeId;
+    private AccountType accountType;
 
-    @Column(name = "balance", nullable = false)
+    @Column(nullable = false)
     private double balance;
 
-    @Column(name = "confirmation")
     private boolean confirmation; //TODO: POSSIBLY UNUSED
 
     @Column(name = "active", nullable = false)
