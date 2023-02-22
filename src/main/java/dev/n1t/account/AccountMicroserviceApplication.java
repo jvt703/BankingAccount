@@ -1,4 +1,4 @@
-package com.smoothstack.number1team.account;
+package dev.n1t.account;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
