@@ -7,6 +7,7 @@ import dev.n1t.account.repository.UserRepository;
 import dev.n1t.model.Account;
 import dev.n1t.model.AccountType;
 import dev.n1t.model.User;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class AccountService {
         }
     }
 
-    public Account createAccount(AccountRegistrationDto accountRegistrationDto, Long userId){
+    public Account createAccount(@NotNull AccountRegistrationDto accountRegistrationDto, Long userId){
         Optional<AccountType> accountType = accountTypeRepository.findById(accountRegistrationDto.getAccountTypeId());
         Optional<User> user = userRepository.findById(userId);
 
@@ -51,6 +52,7 @@ public class AccountService {
             account.setAccountName(accountRegistrationDto.getAccountName());
             account.setAccountType(accountType.get());
             account.setUser(user.get());
+
             account.setBalance(0.0);
             account.setActive(true);
             account.setConfirmation(false);
