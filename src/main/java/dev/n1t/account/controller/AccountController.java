@@ -1,6 +1,5 @@
 package dev.n1t.account.controller;
 import dev.n1t.account.dto.AccountRegistrationDto;
-import dev.n1t.account.repository.AccountRepository;
 import dev.n1t.account.service.AccountService;
 import dev.n1t.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
