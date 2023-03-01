@@ -2,17 +2,21 @@ package dev.n1t.account.dto;
 
 
 import dev.n1t.model.Account;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class OutgoingAccountDto {
-    private final long id;
-    private final long userId;
-    private final long accountTypeId;
-    private final double balance;
-    private final boolean confirmation;
-    private final boolean active;
-    private final long pointsBalance;
-    private final String accountName;
-    private final long createdDate;
+    private long id;
+    private long userId;
+    private long accountTypeId;
+    private double balance;
+    private boolean confirmation;
+    private boolean active;
+    private long pointsBalance;
+    private String accountName;
+    private long createdDate;
 
     public OutgoingAccountDto(Account account) {
         this.id = account.getId();
