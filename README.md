@@ -11,40 +11,17 @@ Example output:
 ```json
 GET /user/1/accounts
 [
-    {
-        "id": 4,
-        "user": {
-            "id": 1,
-            "firstname": "blaze",
-            "lastname": "vincent",
-            "email": "blaze.vincent@smoothstack.com",
-            "emailValidated": true,
-            "password": "test1",
-            "active": true,
-            "address": {
-                "id": 1,
-                "city": "fort madison",
-                "state": "iowa",
-                "street": "1200 avenue c",
-                "zipCode": "52627"
-            },
-            "role": {
-                "id": 1,
-                "roleName": "testuser"
-            }
-        },
-        "accountType": {
-            "id": 1,
-            "accountTypeName": "test account",
-            "description": "an account for testing purposes"
-        },
-        "balance": 0.0,
-        "confirmation": false,
-        "active": true,
-        "pointsBalance": 0,
-        "accountName": "College savings",
-        "createdDate": 1677391301402
-    }
+  {
+    "id": 5,
+    "userId": 1,
+    "accountTypeId": 1,
+    "balance": 0.0,
+    "confirmation": false,
+    "active": true,
+    "pointsBalance": 0,
+    "accountName": "test account 1",
+    "createdDate": 1677683776994
+  }
 ]
 ```
 #### POST /user/{userId}/account
@@ -66,77 +43,31 @@ POST /user/1/accounts
 Example output:
 ```json
 {
-    "id": 4,
-    "user": {
-        "id": 1,
-        "firstname": "blaze",
-        "lastname": "vincent",
-        "email": "blaze.vincent@smoothstack.com",
-        "emailValidated": true,
-        "password": "test1",
-        "active": true,
-        "address": {
-            "id": 1,
-            "city": "fort madison",
-            "state": "iowa",
-            "street": "1200 avenue c",
-            "zipCode": "52627"
-        },
-        "role": {
-            "id": 1,
-            "roleName": "testuser"
-        }
-    },
-    "accountType": {
-        "id": 1,
-        "accountTypeName": "test account",
-        "description": "an account for testing purposes"
-    },
+    "id": 5,
+    "userId": 1,
+    "accountTypeId": 1,
     "balance": 0.0,
     "confirmation": false,
     "active": true,
     "pointsBalance": 0,
     "accountName": "College savings",
-    "createdDate": 1677391301402
+    "createdDate": 1677683776994
 }
 ```
 #### DELETE /user/{userId}/account/{accountId}
 Example output
 ```json
-DELETE /user/1/account/4
+DELETE /user/1/account/5
 {
-    "id": 4,
-    "user": {
-        "id": 1,
-        "firstname": "blaze",
-        "lastname": "vincent",
-        "email": "blaze.vincent@smoothstack.com",
-        "emailValidated": true,
-        "password": "test1",
-        "active": true,
-        "address": {
-            "id": 1,
-            "city": "fort madison",
-            "state": "iowa",
-            "street": "1200 avenue c",
-            "zipCode": "52627"
-        },
-        "role": {
-            "id": 1,
-            "roleName": "testuser"
-        }
-    },
-    "accountType": {
-        "id": 1,
-        "accountTypeName": "test account",
-        "description": "an account for testing purposes"
-    },
+    "id": 5,
+    "userId": 1,
+    "accountTypeId": 1,
     "balance": 0.0,
     "confirmation": false,
     "active": true,
     "pointsBalance": 0,
     "accountName": "College savings",
-    "createdDate": 1677391301402
+    "createdDate": 1677683776994
 }
 ```
 ### AccountTypes
