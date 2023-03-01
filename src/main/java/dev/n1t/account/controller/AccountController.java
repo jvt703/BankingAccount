@@ -1,5 +1,6 @@
 package dev.n1t.account.controller;
 import dev.n1t.account.dto.AccountRegistrationDto;
+import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.service.AccountService;
 import dev.n1t.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class AccountController {
     //get all accounts visible to a user
     //todo: limit visibility to authorized user
     @GetMapping(path = "/user/{userId}/accounts", produces = "application/json")
-    public List<Account> getUserAccounts(
+    public List<OutgoingAccountDto> getUserAccounts(
             @PathVariable(value = "userId") long userId
     ){
         return accountService.getAccountsByUserId(userId);
@@ -29,7 +30,7 @@ public class AccountController {
 
     //create new account (e.g. checking or savings)
     @PostMapping("/user/{userId}/account")
-    public Account createAccount(
+    public OutgoingAccountDto createAccount(
             @PathVariable(value = "userId") long userId,
             @Validated @RequestBody AccountRegistrationDto accountRegistrationDto
     ){
@@ -38,7 +39,7 @@ public class AccountController {
 
     //delete specific account
     @DeleteMapping("/user/{userId}/account/{accountId}")
-    public Account deleteAccount(
+    public OutgoingAccountDto deleteAccount(
             @PathVariable(value = "userId") long userId,
             @PathVariable(value = "accountId") long accountId
     ) {

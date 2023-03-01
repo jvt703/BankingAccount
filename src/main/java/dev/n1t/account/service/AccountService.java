@@ -1,6 +1,7 @@
 package dev.n1t.account.service;
 
 import dev.n1t.account.dto.AccountRegistrationDto;
+import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.exception.AccountNotFoundException;
 import dev.n1t.account.exception.UserNotFoundException;
 import dev.n1t.account.repository.AccountRepository;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AccountService {
@@ -34,15 +37,18 @@ public class AccountService {
         this.accountTypeRepository = accountTypeRepository;
     }
 
-    public List<Account> getAccountsByUserId(long userId){
+    public List<OutgoingAccountDto> getAccountsByUserId(long userId){
         Optional<User> user = userRepository.findById(userId);
 
         if(user.isPresent()){
-            return accountRepository.findByUser(user.get());
+            return accountRepository.findByUser(user.get())
+                    .stream()
+                    .map(OutgoingAccountDto::new)
+                    .collect(Collectors.toList());
         } else throw new UserNotFoundException(userId);
     }
 
-    public Account createAccount(@NotNull AccountRegistrationDto accountRegistrationDto, Long userId){
+    public OutgoingAccountDto createAccount(@NotNull AccountRegistrationDto accountRegistrationDto, Long userId){
         Optional<AccountType> accountType = accountTypeRepository.findById(accountRegistrationDto.getAccountTypeId());
         Optional<User> user = userRepository.findById(userId);
 
@@ -60,10 +66,10 @@ public class AccountService {
 
             accountRepository.save(account);
         }
-        return account;
+        return new OutgoingAccountDto(account);
     }
 
-    public Account deleteAccount(long userId, long accountId){
+    public OutgoingAccountDto deleteAccount(long userId, long accountId){
         Optional<User> user = userRepository.findById(userId);
         Optional<Account> account = accountRepository.findById(accountId);
 
@@ -71,21 +77,16 @@ public class AccountService {
         if(user.isPresent()){
             if(account.isPresent()){
                 if(account.get().getUser().equals(user.get())){
-                    /* todo: the above line seems like bad practice
-                     * you'd think the first account you create would have an id of 1 since its relative to your account
-                     * perhaps a field should be added to be used like an id relative to the account
-                     * the actual account id would not be used
-                     */
                     output = account.get();
 
                     accountRepository.delete(output);
 
-                    return output;
+                    return new OutgoingAccountDto(output);
                 } //todo: if the above suggestion isnt implemented add an exception here
             } else throw new AccountNotFoundException(accountId);
         } else throw new UserNotFoundException(userId);
 
-        return output;
+        return new OutgoingAccountDto(output);
     }
 
 
