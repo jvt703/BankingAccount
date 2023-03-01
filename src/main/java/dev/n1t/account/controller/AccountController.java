@@ -27,15 +27,6 @@ public class AccountController {
         return accountService.getAccountsByUserId(userId);
     }
 
-    //get single account
-//    @GetMapping(path = "/user/{userId}/account/{accountId}", produces = "application/json")
-//    public List<Account> getUserAccounts(
-//            @PathVariable(value = "userId") long userId,
-//            @PathVariable(value = "accountId") long accountId
-//    ){
-//        return accountService.getAccountsByUserId(userId);
-//    }
-
     //create new account (e.g. checking or savings)
     @PostMapping("/user/{userId}/account")
     public Account createAccount(
