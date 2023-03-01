@@ -4,9 +4,11 @@
 Handles CRUD of different types of banking accounts.
 
 ## Usage
-### GET /user/{userId}/accounts
+
+### Accounts
+#### GET /user/{userId}/accounts
 Example output:
-```
+```json
 GET /user/1/accounts
 [
     {
@@ -45,7 +47,7 @@ GET /user/1/accounts
     }
 ]
 ```
-### POST /user/{userId}/account
+#### POST /user/{userId}/account
 Expected input:
 ```
 {
@@ -54,7 +56,7 @@ Expected input:
 }
 ```
 Example input:
-```
+```json
 POST /user/1/accounts
 {
     accountTypeId: 1,
@@ -62,7 +64,7 @@ POST /user/1/accounts
 }
 ```
 Example output:
-```
+```json
 {
     "id": 4,
     "user": {
@@ -98,9 +100,9 @@ Example output:
     "createdDate": 1677391301402
 }
 ```
-### DELETE /user/{userId}/account/{accountId}
+#### DELETE /user/{userId}/account/{accountId}
 Example output
-```
+```json
 DELETE /user/1/account/4
 {
     "id": 4,
@@ -136,6 +138,18 @@ DELETE /user/1/account/4
     "accountName": "College savings",
     "createdDate": 1677391301402
 }
+```
+### AccountTypes
+#### GET /accountTypes
+Example response:
+```json
+[
+    {
+        "id": 1,
+        "accountTypeName": "test account",
+        "description": "an account for testing purposes"
+    }
+]
 ```
 ## Errors
 Error responses should observe the following format:
@@ -145,14 +159,14 @@ Error responses should observe the following format:
 }
 ```
 Example response demonstrating an account not found error:
-```
+```json
 DELETE /user/1/account/4
 {
     "error": "Account with id 4 not found"
 }
 ```
 Example response demonstrating a user not found error:
-```
+```json
 DELETE /user/2/account/4
 {
     "error": "User with id 2 not found"
