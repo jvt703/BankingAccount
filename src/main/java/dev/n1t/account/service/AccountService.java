@@ -2,6 +2,7 @@ package dev.n1t.account.service;
 
 import dev.n1t.account.dto.AccountRegistrationDto;
 import dev.n1t.account.dto.OutgoingAccountDto;
+import dev.n1t.account.exception.AccountDoesNotBelongToUserException;
 import dev.n1t.account.exception.AccountNotFoundException;
 import dev.n1t.account.exception.AccountTypeNotFoundException;
 import dev.n1t.account.exception.UserNotFoundException;
@@ -78,16 +79,14 @@ public class AccountService {
         Optional<User> user = userRepository.findById(userId);
         Optional<Account> account = accountRepository.findById(accountId);
 
-        Account output = new Account();
+        Account output;
         if(user.isPresent()){
             if(account.isPresent()){
                 if(account.get().getUser().equals(user.get())){
                     output = account.get();
 
                     accountRepository.delete(output);
-
-                    return new OutgoingAccountDto(output);
-                } //todo: if the above suggestion isnt implemented add an exception here
+                } else throw new AccountDoesNotBelongToUserException(accountId, userId);
             } else throw new AccountNotFoundException(accountId);
         } else throw new UserNotFoundException(userId);
 
