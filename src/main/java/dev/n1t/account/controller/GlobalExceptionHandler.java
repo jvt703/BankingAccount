@@ -1,6 +1,8 @@
 package dev.n1t.account.controller;
 
+import dev.n1t.account.exception.AccountDoesNotBelongToUserException;
 import dev.n1t.account.exception.AccountNotFoundException;
+import dev.n1t.account.exception.AccountTypeNotFoundException;
 import dev.n1t.account.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +34,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ResponseBody
+    @ExceptionHandler(value = AccountTypeNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleAccountTypeNotFoundException(AccountTypeNotFoundException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = AccountDoesNotBelongToUserException.class)
+    public ResponseEntity<Map<String, String>> handleAccountDoesNotBelongToUserException(AccountDoesNotBelongToUserException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
     //todo: refactor repetitive code?
 }
