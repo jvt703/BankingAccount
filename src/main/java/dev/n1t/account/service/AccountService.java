@@ -3,6 +3,7 @@ package dev.n1t.account.service;
 import dev.n1t.account.dto.AccountRegistrationDto;
 import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.exception.AccountNotFoundException;
+import dev.n1t.account.exception.AccountTypeNotFoundException;
 import dev.n1t.account.exception.UserNotFoundException;
 import dev.n1t.account.repository.AccountRepository;
 import dev.n1t.account.repository.AccountTypeRepository;
@@ -53,19 +54,23 @@ public class AccountService {
         Optional<User> user = userRepository.findById(userId);
 
         Account account = new Account();
-        if(user.isPresent() && accountType.isPresent()){
-            account.setAccountName(accountRegistrationDto.getAccountName());
-            account.setAccountType(accountType.get());
-            account.setUser(user.get());
 
-            account.setBalance(0.0);
-            account.setActive(true);
-            account.setConfirmation(false);
-            account.setPointsBalance(0L);
-            account.setCreatedDate(new Date().getTime());
+        if(user.isPresent()){
+            if(accountType.isPresent()){
+                account.setAccountName(accountRegistrationDto.getAccountName());
+                account.setAccountType(accountType.get());
+                account.setUser(user.get());
 
-            accountRepository.save(account);
-        }
+                account.setBalance(0.0);
+                account.setActive(true);
+                account.setConfirmation(false);
+                account.setPointsBalance(0L);
+                account.setCreatedDate(new Date().getTime());
+
+                accountRepository.save(account);
+            } else throw new AccountTypeNotFoundException(accountRegistrationDto.getAccountTypeId());
+        } else throw new UserNotFoundException(userId);
+
         return new OutgoingAccountDto(account);
     }
 
