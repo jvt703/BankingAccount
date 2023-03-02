@@ -55,7 +55,7 @@ Example output:
 }
 ```
 #### DELETE /user/{userId}/account/{accountId}
-Example output
+Example output:
 ```json
 DELETE /user/1/account/5
 {
@@ -81,6 +81,22 @@ Example response:
         "description": "an account for testing purposes"
     }
 ]
+```
+#### POST /accountType
+Example input:
+```json
+{
+  "accountTypeName": "test",
+  "description": "an account for testing the post mapping"
+}
+```
+Example response:
+```json
+{
+  "id": 1,
+  "accountTypeName": "test",
+  "description": "an account for testing the post mapping"
+}
 ```
 ## Errors
 Error responses should observe the following format:
