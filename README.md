@@ -98,6 +98,40 @@ Example response:
   "description": "an account for testing the post mapping"
 }
 ```
+### AccountTypes
+#### GET /creditCardTypes
+Example response:
+```json
+[
+    {
+        "id": 1,
+        "rewardsName": "test1",
+        "interestRate": 1.0,
+        "minimumPayment": 10.52,
+        "creditLimit": 500.0
+    }
+]
+```
+#### POST /creditCardType
+Example input:
+```json
+{
+    "rewardsName": "test1",
+    "interestRate": 1.0,
+    "minimumPayment": 10.52,
+    "creditLimit": 500.00
+}
+```
+Example response:
+```json
+{
+    "id": 1,
+    "rewardsName": "test1",
+    "interestRate": 1.0,
+    "minimumPayment": 10.52,
+    "creditLimit": 500.0
+}
+```
 ## Errors
 Error responses should observe the following format:
 ```
