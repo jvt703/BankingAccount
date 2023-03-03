@@ -10,7 +10,10 @@ import lombok.Setter;
 public class OutgoingAccountDto {
     private long id;
     private long userId;
-    private long accountTypeId;
+
+    private String accountTypeName;
+    private String accountTypeDescription;
+
     private double balance;
     private boolean confirmation;
     private boolean active;
@@ -21,7 +24,8 @@ public class OutgoingAccountDto {
     public OutgoingAccountDto(Account account) {
         this.id = account.getId();
         this.userId = account.getUser().getId();
-        this.accountTypeId = account.getAccountType().getId();
+        this.accountTypeName = account.getAccountType().getAccountTypeName();
+        this.accountTypeDescription = account.getAccountType().getDescription();
         this.balance = account.getBalance();
         this.confirmation = account.isConfirmation(); //todo: maybe change name so lombok getter name makes sense
         this.active = account.isActive();

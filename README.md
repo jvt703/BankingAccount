@@ -14,7 +14,8 @@ GET /user/1/accounts
   {
     "id": 5,
     "userId": 1,
-    "accountTypeId": 1,
+    "accountTypeName": "checking",
+    "accountTypeDescription": "account for general spending purposes",
     "balance": 0.0,
     "confirmation": false,
     "active": true,
@@ -34,7 +35,7 @@ Expected input:
 ```
 Example input:
 ```json
-POST /user/1/accounts
+POST /user/1/account
 {
     accountTypeId: 1,
     accountName: "College savings"
@@ -45,7 +46,8 @@ Example output:
 {
     "id": 5,
     "userId": 1,
-    "accountTypeId": 1,
+    "accountTypeName": "checking",
+    "accountTypeDescription": "account for general spending purposes",
     "balance": 0.0,
     "confirmation": false,
     "active": true,
@@ -61,7 +63,8 @@ DELETE /user/1/account/5
 {
     "id": 5,
     "userId": 1,
-    "accountTypeId": 1,
+    "accountTypeName": "checking",
+    "accountTypeDescription": "account for general spending purposes",
     "balance": 0.0,
     "confirmation": false,
     "active": true,
@@ -86,16 +89,16 @@ Example response:
 Example input:
 ```json
 {
-  "accountTypeName": "test",
-  "description": "an account for testing the post mapping"
+    "accountTypeName": "test",
+    "description": "an account for testing the post mapping"
 }
 ```
 Example response:
 ```json
 {
-  "id": 1,
-  "accountTypeName": "test",
-  "description": "an account for testing the post mapping"
+    "id": 1,
+    "accountTypeName": "test",
+    "description": "an account for testing the post mapping"
 }
 ```
 ### AccountTypes
