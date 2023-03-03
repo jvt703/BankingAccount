@@ -1,8 +1,11 @@
 package dev.n1t.account.service;
 
 import dev.n1t.account.repository.CreditCardTypeRepository;
+import dev.n1t.model.CreditCardType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CreditCardTypeService {
@@ -14,4 +17,7 @@ public class CreditCardTypeService {
         this.creditCardTypeRepository = creditCardTypeRepository;
     }
 
+    public List<CreditCardType> getAllCreditCardTypes(){
+        return this.creditCardTypeRepository.findAll();
+    }
 }
