@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AccountTypeRepository extends CrudRepository<AccountType, Long> {
     List<AccountType> findAll();
+    AccountType findByAccountTypeName(String accountTypeName);
 }
