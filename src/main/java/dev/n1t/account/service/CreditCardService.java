@@ -5,10 +5,7 @@ import dev.n1t.account.dto.OutgoingCreditCardDto;
 import dev.n1t.account.exception.CreditCardTypeNotFoundException;
 import dev.n1t.account.exception.UserAlreadyHasCardOfTypeException;
 import dev.n1t.account.exception.UserNotFoundException;
-import dev.n1t.account.repository.AccountRepository;
-import dev.n1t.account.repository.CreditCardTypeRepository;
-import dev.n1t.account.repository.CreditDetailRepository;
-import dev.n1t.account.repository.UserRepository;
+import dev.n1t.account.repository.*;
 import dev.n1t.model.Account;
 import dev.n1t.model.CreditCardType;
 import dev.n1t.model.CreditDetail;
@@ -23,18 +20,22 @@ import java.util.Optional;
 @Service
 public class CreditCardService {
     private final AccountRepository accountRepository;
+    private final AccountTypeRepository accountTypeRepository;
     private final CreditCardTypeRepository creditCardTypeRepository;
     private final UserRepository userRepository;
     private final CreditDetailRepository creditDetailRepository;
 
+
     @Autowired
     public CreditCardService(
         AccountRepository accountRepository,
+        AccountTypeRepository accountTypeRepository,
         CreditCardTypeRepository creditCardTypeRepository,
         UserRepository userRepository,
         CreditDetailRepository creditDetailRepository
     ){
         this.accountRepository = accountRepository;
+        this.accountTypeRepository = accountTypeRepository;
         this.creditCardTypeRepository = creditCardTypeRepository;
         this.userRepository = userRepository;
         this.creditDetailRepository = creditDetailRepository;
@@ -60,8 +61,7 @@ public class CreditCardService {
                     inputAccount.setConfirmation(false);
                     inputAccount.setPointsBalance(0L);
                     inputAccount.setAccountName(creditCardType.get().getRewardsName() + " Card");
-                    inputAccount.setAccountType(); //credit card account type
-                    //todo: make the account types predetermined
+                    inputAccount.setAccountType(accountTypeRepository.findByAccountTypeName("Credit")); //credit card account type
 
                     Account outputAccount = accountRepository.save(inputAccount);
 
