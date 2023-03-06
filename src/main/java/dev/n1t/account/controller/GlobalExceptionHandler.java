@@ -1,9 +1,6 @@
 package dev.n1t.account.controller;
 
-import dev.n1t.account.exception.AccountDoesNotBelongToUserException;
-import dev.n1t.account.exception.AccountNotFoundException;
-import dev.n1t.account.exception.AccountTypeNotFoundException;
-import dev.n1t.account.exception.UserNotFoundException;
+import dev.n1t.account.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,11 +40,27 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(value = CreditCardTypeNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCreditCardTypeNotFoundException(CreditCardTypeNotFoundException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = AccountDoesNotBelongToUserException.class)
     public ResponseEntity<Map<String, String>> handleAccountDoesNotBelongToUserException(AccountDoesNotBelongToUserException e){
         Map<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = UserAlreadyHasCardOfTypeException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyHasCardOfTypeException(UserAlreadyHasCardOfTypeException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
     //todo: refactor repetitive code?
 }
