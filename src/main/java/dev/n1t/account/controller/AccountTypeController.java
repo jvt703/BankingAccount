@@ -28,8 +28,4 @@ public class AccountTypeController {
         return this.accountTypeService.getAllAccountTypes();
     }
 
-    @PostMapping(path = "/accountType", produces = "application/json")
-    public AccountType createAccountType(@Validated @RequestBody IncomingAccountTypeDto incomingAccountTypeDto){
-        return this.accountTypeService.createAccountType(incomingAccountTypeDto);
-    }
 }
