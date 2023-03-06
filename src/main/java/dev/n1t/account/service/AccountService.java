@@ -50,6 +50,20 @@ public class AccountService {
         } else throw new UserNotFoundException(userId);
     }
 
+    public OutgoingAccountDto getAccount(long userId, long accountId){
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isPresent()){
+            Optional<Account> account = accountRepository.findById(accountId);
+
+            if(account.isPresent()){
+                if(account.get().getUser().equals(user.get())){
+                    return new OutgoingAccountDto(account.get());
+                } else throw new AccountDoesNotBelongToUserException(accountId, userId);
+            } else throw new AccountNotFoundException(accountId);
+        } else throw new UserNotFoundException(userId);
+    }
+
     public OutgoingAccountDto createAccount(@NotNull AccountRegistrationDto accountRegistrationDto, Long userId){
         Optional<AccountType> accountType = accountTypeRepository.findById(accountRegistrationDto.getAccountTypeId());
         Optional<User> user = userRepository.findById(userId);
