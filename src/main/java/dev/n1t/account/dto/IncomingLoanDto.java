@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class IncomingLoanDto {
     private double loanAmount;
+    private long debitedAccountId;
 }
