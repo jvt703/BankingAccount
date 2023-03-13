@@ -48,6 +48,14 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(value = CreditCardApplicationNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCreditCardApplicationNotFoundException(CreditCardApplicationNotFoundException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = AccountDoesNotBelongToUserException.class)
     public ResponseEntity<Map<String, String>> handleAccountDoesNotBelongToUserException(AccountDoesNotBelongToUserException e){
         Map<String, String> response = new HashMap<>();
@@ -66,6 +74,14 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = UserHasAlreadyAppliedForCardOfTypeException.class)
     public ResponseEntity<Map<String, String>> handleUserHasAlreadyAppliedForCardOfTypeException(UserHasAlreadyAppliedForCardOfTypeException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = ApplicationDecisionAlreadyMadeException.class)
+    public ResponseEntity<Map<String, String>> handleApplicationDecisionAlreadyMadeException(ApplicationDecisionAlreadyMadeException e){
         Map<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
