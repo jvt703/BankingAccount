@@ -56,6 +56,14 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(value = LoanApplicationNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleLoanApplicationNotFoundException(LoanApplicationNotFoundException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = AccountDoesNotBelongToUserException.class)
     public ResponseEntity<Map<String, String>> handleAccountDoesNotBelongToUserException(AccountDoesNotBelongToUserException e){
         Map<String, String> response = new HashMap<>();
