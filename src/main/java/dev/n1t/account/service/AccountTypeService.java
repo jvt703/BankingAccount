@@ -8,6 +8,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -21,25 +23,40 @@ public class AccountTypeService {
 
     @EventListener(ContextRefreshedEvent.class)
     public void initializeAccountTypes() {
-        accountTypeRepository.deleteAll();
 
-        AccountType checking = new AccountType();
-        checking.setAccountTypeName("Checking");
-        checking.setDescription("General purpose account for everyday expenses");
+        List<AccountType> existingAccountTypes = accountTypeRepository.findAll();
+        if(existingAccountTypes.isEmpty()){
+            List<AccountType> stagedAccountTypes = new ArrayList<>();
+            AccountType checking = AccountType.builder()
+                    .id(1L)
+                    .accountTypeName("Checking")
+                    .description("General purpose account for everyday expenses")
+                    .build();
+            stagedAccountTypes.add(checking);
 
-        AccountType savings = new AccountType();
-        savings.setAccountTypeName("Savings");
-        savings.setDescription("Account intended for saving funds");
+            AccountType savings = AccountType.builder()
+                    .id(2L)
+                    .accountTypeName("Savings")
+                    .description("Account intended for saving funds")
+                    .build();
+            stagedAccountTypes.add(savings);
 
-        AccountType credit = new AccountType();
-        credit.setAccountTypeName("Credit");
-        credit.setDescription("Account tied to a credit card with a rewards points system");
+            AccountType credit = AccountType.builder()
+                    .id(3L)
+                    .accountTypeName("Credit")
+                    .description("Account tied to a credit card with a rewards points system")
+                    .build();
+            stagedAccountTypes.add(credit);
 
-        AccountType loan = new AccountType();
-        loan.setAccountTypeName("Loan");
-        loan.setDescription("Account whose balance reflects the owed amount on a loan");
+            AccountType loan = AccountType.builder()
+                    .id(4L)
+                    .accountTypeName("Loan")
+                    .description("Account whose balance reflects the owed amount on a loan")
+                    .build();
+            stagedAccountTypes.add(loan);
 
-        accountTypeRepository.saveAll(List.of(checking, savings, credit, loan));
+            accountTypeRepository.saveAll(List.of(checking, savings, credit, loan));
+        }
     }
 
     public List<AccountType> getAllAccountTypes(){
