@@ -62,5 +62,13 @@ public class GlobalExceptionHandler {
         response.put("error", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+
+    @ResponseBody
+    @ExceptionHandler(value = UserHasAlreadyAppliedForCardOfTypeException.class)
+    public ResponseEntity<Map<String, String>> handleUserHasAlreadyAppliedForCardOfTypeException(UserHasAlreadyAppliedForCardOfTypeException e){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
     //todo: refactor repetitive code?
 }
