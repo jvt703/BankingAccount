@@ -1,17 +1,16 @@
 package dev.n1t.account.service;
 
 import dev.n1t.account.dto.IncomingCreditCardApplicationDto;
+import dev.n1t.account.dto.IncomingCreditCardDecisionDto;
 import dev.n1t.account.dto.OutgoingCreditCardApplicationDto;
-import dev.n1t.account.dto.OutgoingCreditCardDto;
-import dev.n1t.account.exception.CreditCardTypeNotFoundException;
-import dev.n1t.account.exception.UserAlreadyHasCardOfTypeException;
-import dev.n1t.account.exception.UserHasAlreadyAppliedForCardOfTypeException;
-import dev.n1t.account.exception.UserNotFoundException;
+import dev.n1t.account.dto.OutgoingCreditCardDecisionDto;
+import dev.n1t.account.exception.*;
 import dev.n1t.account.repository.*;
 import dev.n1t.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -88,39 +87,44 @@ public class CreditCardService {
             } else throw new CreditCardTypeNotFoundException(incomingCreditCardApplicationDto.getCreditCardTypeId());
         } else throw new UserNotFoundException(userId);
     }
-    public OutgoingCreditCardDto createCreditCard(IncomingCreditCardApplicationDto incomingCreditCardApplicationDto, long userId){
-        Optional<CreditCardType> creditCardType = creditCardTypeRepository.findById(incomingCreditCardApplicationDto.getCreditCardTypeId());
-        Optional<User> user = userRepository.findById(userId);
+    public OutgoingCreditCardDecisionDto createCreditCardApplicationDecision(long creditCardApplicationId, IncomingCreditCardDecisionDto incomingCreditCardDecisionDto){
+        Optional<CreditCardApplication> creditCardApplication = creditCardApplicationRepository.findById(creditCardApplicationId);
 
-        if(user.isPresent()){
-            if(creditCardType.isPresent()){
-                List<Account> userAccounts = accountRepository.findByUser(user.get());
-                Optional<CreditDetail> creditDetail = creditDetailRepository.findByCreditCardTypeAndAccountIn(creditCardType.get(), userAccounts);
+        if(creditCardApplication.isPresent()){
 
-                if(creditDetail.isPresent()){
-                    throw new UserAlreadyHasCardOfTypeException(user.get().getId(), creditDetail.get().getId());
-                } else {
-                    Account inputAccount = new Account();
-                    inputAccount.setCreatedDate(new Date().getTime());
-                    inputAccount.setUser(user.get());
-                    inputAccount.setBalance(0.0);
-                    inputAccount.setActive(true);
-                    inputAccount.setConfirmation(false);
-                    inputAccount.setPointsBalance(0L);
-                    inputAccount.setAccountName(creditCardType.get().getRewardsName() + " Card");
-                    inputAccount.setAccountType(accountTypeRepository.findByAccountTypeName("Credit")); //credit card account type
-
+            ApplicationDetails creditCardApplicationDetails = creditCardApplication.get().getApplicationDetails();
+            if(creditCardApplicationDetails.getDecisionDate() == null){
+                if(incomingCreditCardDecisionDto.isApproved()){
+                    Account inputAccount = Account.builder()
+                            .createdDate(new Date().getTime())
+                            .user(creditCardApplication.get().getApplicationDetails().getUser())
+                            .balance(0.0)
+                            .active(true)
+                            .confirmation(false)
+                            .pointsBalance(0L)
+                            .accountName(creditCardApplication.get().getCreditCardType().getRewardsName() + " Card")
+                            .accountType(accountTypeRepository.findByAccountTypeName("Credit"))
+                            .build();
                     Account outputAccount = accountRepository.save(inputAccount);
 
                     CreditDetail inputCreditDetail = new CreditDetail();
-                    inputCreditDetail.setCreditCardType(creditCardType.get());
+                    inputCreditDetail.setCreditCardType(creditCardApplication.get().getCreditCardType());
                     inputCreditDetail.setAccount(outputAccount);
 
                     creditDetailRepository.save(inputCreditDetail);
-
-                    return new OutgoingCreditCardDto(creditCardType.get(), outputAccount);
                 }
-            } else throw new CreditCardTypeNotFoundException(incomingCreditCardApplicationDto.getCreditCardTypeId());
-        } else throw new UserNotFoundException(userId);
+
+                creditCardApplicationDetails.setApproved(incomingCreditCardDecisionDto.isApproved());
+                creditCardApplicationDetails.setDecisionDate(Instant.now());
+                applicationDetailsRepository.save(creditCardApplicationDetails);
+
+                return new OutgoingCreditCardDecisionDto(
+                        creditCardApplicationDetails.getUser().getFirstname(),
+                        creditCardApplicationDetails.getUser().getLastname(),
+                        creditCardApplication.get().getCreditCardType().getRewardsName(),
+                        incomingCreditCardDecisionDto.isApproved()
+                );
+            } else throw new ApplicationDecisionAlreadyMadeException(creditCardApplicationDetails);
+        } else throw new CreditCardApplicationNotFoundException(creditCardApplicationId);
     }
 }
