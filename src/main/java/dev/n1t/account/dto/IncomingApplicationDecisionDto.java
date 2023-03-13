@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IncomingCreditCardDecisionDto {
+public class IncomingApplicationDecisionDto {
     private boolean approved;
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class OutgoingCreditCardApplicationDto {
+public class OutgoingApplicationDto {
     private String message;
 
 }
