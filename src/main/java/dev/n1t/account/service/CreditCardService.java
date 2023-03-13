@@ -1,8 +1,8 @@
 package dev.n1t.account.service;
 
 import dev.n1t.account.dto.IncomingCreditCardApplicationDto;
-import dev.n1t.account.dto.IncomingCreditCardDecisionDto;
-import dev.n1t.account.dto.OutgoingCreditCardApplicationDto;
+import dev.n1t.account.dto.IncomingApplicationDecisionDto;
+import dev.n1t.account.dto.OutgoingApplicationDto;
 import dev.n1t.account.dto.OutgoingCreditCardDecisionDto;
 import dev.n1t.account.exception.*;
 import dev.n1t.account.repository.*;
@@ -25,9 +25,6 @@ public class CreditCardService {
     private final UserRepository userRepository;
     private final CreditDetailRepository creditDetailRepository;
 
-    private final Map<String, EmploymentStatus> employmentStatusMap = new HashMap<>();
-
-
     @Autowired
     public CreditCardService(
         CreditCardApplicationRepository creditCardApplicationRepository,
@@ -47,7 +44,7 @@ public class CreditCardService {
         this.creditDetailRepository = creditDetailRepository;
     }
 
-    public OutgoingCreditCardApplicationDto createCreditCardApplication(IncomingCreditCardApplicationDto incomingCreditCardApplicationDto, long userId){
+    public OutgoingApplicationDto createCreditCardApplication(IncomingCreditCardApplicationDto incomingCreditCardApplicationDto, long userId){
         Optional<CreditCardType> creditCardType = creditCardTypeRepository.findById(incomingCreditCardApplicationDto.getCreditCardTypeId());
         Optional<User> user = userRepository.findById(userId);
 
@@ -56,7 +53,6 @@ public class CreditCardService {
                 List<Account> userAccounts = accountRepository.findByUser(user.get());
                 Optional<CreditDetail> creditDetail = creditDetailRepository.findByCreditCardTypeAndAccountIn(creditCardType.get(), userAccounts);
 
-                //todo: handle duplicate applications
                 if(creditDetail.isEmpty()){
                     List<ApplicationDetails> userApplicationDetails = applicationDetailsRepository.getByUser(user.get());
                     Optional<CreditCardApplication> creditCardApplication = creditCardApplicationRepository.getByCreditCardTypeAndApplicationDetailsIn(creditCardType.get(), userApplicationDetails);
@@ -81,20 +77,20 @@ public class CreditCardService {
 
                         creditCardApplicationRepository.save(inputCreditCardApplication);
 
-                        return new OutgoingCreditCardApplicationDto(String.format("You have successfully applied for the %s card!", creditCardType.get().getRewardsName()));
+                        return new OutgoingApplicationDto(String.format("You have successfully applied for the %s card!", creditCardType.get().getRewardsName()));
                     } else throw new UserHasAlreadyAppliedForCardOfTypeException(user.get().getId(), creditCardType.get().getId());
                 } else throw new UserAlreadyHasCardOfTypeException(user.get().getId(), creditCardType.get().getId());
             } else throw new CreditCardTypeNotFoundException(incomingCreditCardApplicationDto.getCreditCardTypeId());
         } else throw new UserNotFoundException(userId);
     }
-    public OutgoingCreditCardDecisionDto createCreditCardApplicationDecision(long creditCardApplicationId, IncomingCreditCardDecisionDto incomingCreditCardDecisionDto){
+    public OutgoingCreditCardDecisionDto createCreditCardApplicationDecision(long creditCardApplicationId, IncomingApplicationDecisionDto incomingApplicationDecisionDto){
         Optional<CreditCardApplication> creditCardApplication = creditCardApplicationRepository.findById(creditCardApplicationId);
 
         if(creditCardApplication.isPresent()){
 
             ApplicationDetails creditCardApplicationDetails = creditCardApplication.get().getApplicationDetails();
             if(creditCardApplicationDetails.getDecisionDate() == null){
-                if(incomingCreditCardDecisionDto.isApproved()){
+                if(incomingApplicationDecisionDto.isApproved()){
                     Account inputAccount = Account.builder()
                             .createdDate(new Date().getTime())
                             .user(creditCardApplication.get().getApplicationDetails().getUser())
@@ -114,7 +110,7 @@ public class CreditCardService {
                     creditDetailRepository.save(inputCreditDetail);
                 }
 
-                creditCardApplicationDetails.setApproved(incomingCreditCardDecisionDto.isApproved());
+                creditCardApplicationDetails.setApproved(incomingApplicationDecisionDto.isApproved());
                 creditCardApplicationDetails.setDecisionDate(Instant.now());
                 applicationDetailsRepository.save(creditCardApplicationDetails);
 
@@ -122,7 +118,7 @@ public class CreditCardService {
                         creditCardApplicationDetails.getUser().getFirstname(),
                         creditCardApplicationDetails.getUser().getLastname(),
                         creditCardApplication.get().getCreditCardType().getRewardsName(),
-                        incomingCreditCardDecisionDto.isApproved()
+                        incomingApplicationDecisionDto.isApproved()
                 );
             } else throw new ApplicationDecisionAlreadyMadeException(creditCardApplicationDetails);
         } else throw new CreditCardApplicationNotFoundException(creditCardApplicationId);
