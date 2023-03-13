@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IncomingCreditCardDto {
+public class IncomingCreditCardApplicationDto {
     private long creditCardTypeId;
 
     private long socialSecurityNumber;
