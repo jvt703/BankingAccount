@@ -1,8 +1,8 @@
 package dev.n1t.account.controller;
 
 import dev.n1t.account.dto.IncomingCreditCardApplicationDto;
-import dev.n1t.account.dto.IncomingCreditCardDecisionDto;
-import dev.n1t.account.dto.OutgoingCreditCardApplicationDto;
+import dev.n1t.account.dto.IncomingApplicationDecisionDto;
+import dev.n1t.account.dto.OutgoingApplicationDto;
 import dev.n1t.account.dto.OutgoingCreditCardDecisionDto;
 import dev.n1t.account.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CreditCardController {
     }
 
     @PostMapping("/user/{userId}/creditCardApplication")
-    public OutgoingCreditCardApplicationDto createCreditCardApplication(
+    public OutgoingApplicationDto createCreditCardApplication(
         @Validated @RequestBody IncomingCreditCardApplicationDto incomingCreditCardApplicationDto,
         @PathVariable(value = "userId") long userId
     ){
@@ -30,8 +30,8 @@ public class CreditCardController {
     @PostMapping("/creditCardApplication/{creditCardApplicationId}")
     public OutgoingCreditCardDecisionDto createCreditCardApplicationDecision(
             @PathVariable(value = "creditCardApplicationId") long creditCardApplicationId,
-            @Validated @RequestBody IncomingCreditCardDecisionDto incomingCreditCardDecisionDto
+            @Validated @RequestBody IncomingApplicationDecisionDto incomingApplicationDecisionDto
     ){
-        return creditCardService.createCreditCardApplicationDecision(creditCardApplicationId, incomingCreditCardDecisionDto);
+        return creditCardService.createCreditCardApplicationDecision(creditCardApplicationId, incomingApplicationDecisionDto);
     }
 }
