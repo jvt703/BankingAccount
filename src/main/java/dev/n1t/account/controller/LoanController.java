@@ -18,21 +18,17 @@ public class LoanController {
         this.loanService = loanService;
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @PostMapping(path = "/user/{userId}/loan", produces = "application/json")
-//    public OutgoingLoanDto createLoan(
-//            @PathVariable(value = "userId") long userId,
-//            @Validated @RequestBody IncomingLoanDto incomingLoanDto
-//        ){
-//        return loanService.createLoan(userId, incomingLoanDto);
-//    }
-
     @PostMapping(path = "/user/{userId}/loanApplication", produces = "application/json")
     public OutgoingApplicationDto createLoanApplication(
             @PathVariable(value = "userId") long userId,
             @Validated @RequestBody IncomingLoanApplicationDto incomingLoanApplicationDto
     ){
         return loanService.createLoanApplication(userId, incomingLoanApplicationDto);
+    }
+
+    @GetMapping(path = "loanApplications", produces = "application/json")
+    public List<OutgoingLoanApplicationDto> getAllLoanApplications(){
+        return loanService.getAllLoanApplications();
     }
 
     @PostMapping(path = "/loanApplication/{loanApplicationId}")

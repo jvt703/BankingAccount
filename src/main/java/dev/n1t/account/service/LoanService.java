@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class LoanService {
@@ -24,7 +26,6 @@ public class LoanService {
     private final AccountTypeRepository accountTypeRepository;
     private final LoanDetailRepository loanDetailRepository;
 
-    //todo: approve loans
     //get list of loan applications
     //get list of credit card applications
 
@@ -135,5 +136,11 @@ public class LoanService {
                 } else throw new AccountDoesNotBelongToUserException(debitedAccount.get().getId(), userId);
             } else throw new AccountNotFoundException(incomingLoanApplicationDto.getDebitedAccountId());
         } else throw new UserNotFoundException(userId);
+    }
+
+    public List<OutgoingLoanApplicationDto> getAllLoanApplications(){
+        return loanApplicationRepository.findAll().stream()
+                .map(OutgoingLoanApplicationDto::new)
+                .collect(Collectors.toList());
     }
 }

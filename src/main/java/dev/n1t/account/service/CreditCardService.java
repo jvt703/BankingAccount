@@ -1,9 +1,6 @@
 package dev.n1t.account.service;
 
-import dev.n1t.account.dto.IncomingCreditCardApplicationDto;
-import dev.n1t.account.dto.IncomingApplicationDecisionDto;
-import dev.n1t.account.dto.OutgoingApplicationDto;
-import dev.n1t.account.dto.OutgoingCreditCardDecisionDto;
+import dev.n1t.account.dto.*;
 import dev.n1t.account.exception.*;
 import dev.n1t.account.repository.*;
 import dev.n1t.model.*;
@@ -12,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CreditCardService {
@@ -122,5 +120,11 @@ public class CreditCardService {
                 );
             } else throw new ApplicationDecisionAlreadyMadeException(creditCardApplicationDetails);
         } else throw new CreditCardApplicationNotFoundException(creditCardApplicationId);
+    }
+
+    public List<OutgoingCreditCardApplicationDto> getAllCreditCardApplications(){
+        return creditCardApplicationRepository.findAll().stream()
+                .map(OutgoingCreditCardApplicationDto::new)
+                .collect(Collectors.toList());
     }
 }

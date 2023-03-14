@@ -10,4 +10,5 @@ import java.util.Optional;
 
 public interface CreditCardApplicationRepository extends CrudRepository<CreditCardApplication, Long> {
     Optional<CreditCardApplication> getByCreditCardTypeAndApplicationDetailsIn(CreditCardType creditCardType, List<ApplicationDetails> applicationDetails);
+    List<CreditCardApplication> findAll();
 }
