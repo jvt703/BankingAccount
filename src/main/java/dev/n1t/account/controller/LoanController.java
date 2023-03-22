@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 public class LoanController {
@@ -27,8 +28,8 @@ public class LoanController {
     }
 
     @GetMapping(path = "loanApplications", produces = "application/json")
-    public List<OutgoingLoanApplicationDto> getAllLoanApplications(){
-        return loanService.getAllLoanApplications();
+    public List<OutgoingLoanApplicationDto> getAllLoanApplications(@RequestParam Map<String, String> queryParams){
+        return loanService.getAllLoanApplications(queryParams);
     }
 
     @PostMapping(path = "/loanApplication/{loanApplicationId}")

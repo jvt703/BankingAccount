@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -89,15 +90,12 @@ public class LoanService {
 
                 loanApplicationDetails.setApproved(decisionDto.isApproved());
                 loanApplicationDetails.setDecisionDate(Instant.now());
-                applicationDetailsRepository.save(loanApplicationDetails);
 
+                System.out.println(loanApplication.get());
                 return new OutgoingLoanDecisionDto(
-                        loanApplicationDetails.getUser().getFirstname(),
-                        loanApplicationDetails.getUser().getLastname(),
-                        loanApplication.get().getRequestedAmount(),
+                        new OutgoingLoanApplicationDto(loanApplication.get()),
                         loanApplication.get().getDebitedAccount().getAccountName(),
-                        newDebitedAccountBalance,
-                        decisionDto.isApproved()
+                        newDebitedAccountBalance
                 );
             } else throw new ApplicationDecisionAlreadyMadeException(loanApplicationDetails);
         } else throw new LoanApplicationNotFoundException(applicationId);
@@ -138,8 +136,37 @@ public class LoanService {
         } else throw new UserNotFoundException(userId);
     }
 
-    public List<OutgoingLoanApplicationDto> getAllLoanApplications(){
-        return loanApplicationRepository.findAll().stream()
+    public List<OutgoingLoanApplicationDto> getAllLoanApplications(Map<String, String> queryParams) {
+        Long id = null;
+        String firstName = null;
+        String lastName = null;
+        Boolean approved = null;
+        Boolean decisionMade = null;
+
+        if (queryParams.containsKey("id")) {
+            id = Long.parseLong(queryParams.get("id"));
+        }
+
+        if (queryParams.containsKey("firstName")) {
+            firstName = queryParams.get("firstName");
+        }
+
+        if (queryParams.containsKey("lastName")) {
+            lastName = queryParams.get("lastName");
+        }
+
+        if (queryParams.containsKey("approved")) {
+            approved = Boolean.parseBoolean(queryParams.get("approved"));
+        }
+
+        if (queryParams.containsKey("decisionMade")) {
+            decisionMade = Boolean.parseBoolean(queryParams.get("decisionMade"));
+        }
+
+        List<LoanApplication> loanApplications = loanApplicationRepository
+                .findAllByQueryParams(id, firstName, lastName, approved, decisionMade);
+
+        return loanApplications.stream()
                 .map(OutgoingLoanApplicationDto::new)
                 .collect(Collectors.toList());
     }
