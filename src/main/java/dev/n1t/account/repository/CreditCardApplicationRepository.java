@@ -15,8 +15,8 @@ public interface CreditCardApplicationRepository extends CrudRepository<CreditCa
     Optional<CreditCardApplication> getByCreditCardTypeAndApplicationDetailsIn(CreditCardType creditCardType, List<ApplicationDetails> applicationDetails);
 
     @Query("SELECT c FROM CreditCardApplication c WHERE (:id IS NULL OR c.id = :id) "
-            + "AND (:firstName IS NULL OR c.applicationDetails.user.firstname = :firstName) "
-            + "AND (:lastName IS NULL OR c.applicationDetails.user.lastname = :lastName) "
+            + "AND (:firstName IS NULL OR c.applicationDetails.user.firstname LIKE %:firstName%) "
+            + "AND (:lastName IS NULL OR c.applicationDetails.user.lastname LIKE %:lastName%) "
             + "AND (:approved IS NULL OR c.applicationDetails.approved = :approved) "
             + "AND (:decisionMade IS NULL OR (:decisionMade = true AND c.applicationDetails.decisionDate IS NOT NULL) "
             + "OR (:decisionMade = false AND c.applicationDetails.decisionDate IS NULL))")

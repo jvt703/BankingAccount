@@ -14,11 +14,11 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
     List<Account> findByUser(User user);
     @Query("SELECT a FROM Account a WHERE "
             + "(:id IS NULL OR a.id = :id) "
-            + "AND (:firstName IS NULL OR a.user.firstname = :firstName) "
-            + "AND (:lastName IS NULL OR a.user.lastname = :lastName) "
+            + "AND (:firstName IS NULL OR a.user.firstname LIKE %:firstName%) "
+            + "AND (:lastName IS NULL OR a.user.lastname LIKE %:lastName%) "
             + "AND (:accountTypeId IS NULL OR a.accountType.id = :accountTypeId) "
             + "AND (:active IS NULL OR a.active = :active) "
-            + "AND (:accountName IS NULL OR a.accountName = :accountName) "
+            + "AND (:accountName IS NULL OR a.accountName LIKE %:accountName%) "
             + "AND (:createdDate IS NULL OR a.createdDate = :createdDate)")
     List<Account> findAllByQueryParams(
             @Param("id") Long id,
