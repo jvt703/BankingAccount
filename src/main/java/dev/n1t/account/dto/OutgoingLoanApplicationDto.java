@@ -10,6 +10,8 @@ import java.time.Instant;
 @Setter
 public class OutgoingLoanApplicationDto {
     private Long loanApplicationId;
+    private Long depositAccountId;
+    private String depositAccountName;
     private Double loanAmount;
     private String userFirstName;
     private String userLastName;
@@ -29,7 +31,10 @@ public class OutgoingLoanApplicationDto {
         loanApplicationId = loanApplication.getId();
         ApplicationDetails loanApplicationDetails = loanApplication.getApplicationDetails();
         User user = loanApplicationDetails.getUser();
+        Account depositAccount = loanApplication.getDebitedAccount();
 
+        depositAccountId = depositAccount.getId();
+        depositAccountName = depositAccount.getAccountName();
         loanAmount = loanApplication.getRequestedAmount();
         userFirstName = user.getFirstname();
         userLastName = user.getLastname();
