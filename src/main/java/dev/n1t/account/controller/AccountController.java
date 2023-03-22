@@ -1,5 +1,6 @@
 package dev.n1t.account.controller;
 import dev.n1t.account.dto.AccountRegistrationDto;
+import dev.n1t.account.dto.IncomingAccountActivationDto;
 import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.service.AccountService;
 import dev.n1t.model.Account;
@@ -28,6 +29,12 @@ public class AccountController {
         return accountService.getAccountsByUserId(userId);
     }
 
+    @GetMapping(path = "/accounts/all", produces = "application/json")
+    public List<OutgoingAccountDto> getAllAccounts(
+    ){
+        return accountService.getAllAccounts();
+    }
+
     @GetMapping(path = "/user/{userId}/account/{accountId}", produces = "application/json")
     public OutgoingAccountDto getUserAccount(
             @PathVariable(value = "userId") long userId,
@@ -52,6 +59,14 @@ public class AccountController {
             @PathVariable(value = "accountId") long accountId
     ) {
         return accountService.deleteAccount(userId, accountId);
+    }
+
+    @PutMapping("/account/{accountId}/activation")
+    public OutgoingAccountDto updateAccountActivationStatus(
+            @PathVariable(value = "accountId") long accountId,
+            @Validated @RequestBody IncomingAccountActivationDto accountActivationDto
+    ){
+        return accountService.updateAccountActivationStatus(accountId, accountActivationDto);
     }
 
 }

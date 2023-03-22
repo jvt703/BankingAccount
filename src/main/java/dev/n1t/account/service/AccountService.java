@@ -1,6 +1,7 @@
 package dev.n1t.account.service;
 
 import dev.n1t.account.dto.AccountRegistrationDto;
+import dev.n1t.account.dto.IncomingAccountActivationDto;
 import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.exception.AccountDoesNotBelongToUserException;
 import dev.n1t.account.exception.AccountNotFoundException;
@@ -15,6 +16,9 @@ import dev.n1t.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -107,5 +111,24 @@ public class AccountService {
         return new OutgoingAccountDto(output);
     }
 
+    public List<OutgoingAccountDto> getAllAccounts(){
+        return accountRepository.findAll().stream()
+                .map(OutgoingAccountDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public OutgoingAccountDto updateAccountActivationStatus(
+            long accountId,
+            IncomingAccountActivationDto accountActivationDto
+    ){
+        Optional<Account> account = accountRepository.findById(accountId);
+        if(account.isPresent()){
+            account.get().setActive(accountActivationDto.isActive());
+
+            accountRepository.save(account.get());
+
+            return new OutgoingAccountDto(account.get());
+        } else throw new AccountNotFoundException(accountId);
+    }
 
 }
