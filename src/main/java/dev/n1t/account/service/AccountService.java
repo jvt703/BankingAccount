@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -111,8 +112,48 @@ public class AccountService {
         return new OutgoingAccountDto(output);
     }
 
-    public List<OutgoingAccountDto> getAllAccounts(){
-        return accountRepository.findAll().stream()
+    public List<OutgoingAccountDto> getAllAccounts(Map<String, String> queryParams) {
+        Long id = null;
+        String firstName = null;
+        String lastName = null;
+        Long accountTypeId = null;
+        Boolean active = null;
+        String accountName = null;
+        Long createdDate = null;
+
+        if (queryParams.containsKey("id")) {
+            id = Long.parseLong(queryParams.get("id"));
+        }
+
+        if (queryParams.containsKey("firstName")) {
+            firstName = queryParams.get("firstName");
+        }
+
+        if (queryParams.containsKey("lastName")) {
+            lastName = queryParams.get("lastName");
+        }
+
+        if (queryParams.containsKey("accountTypeId")) {
+            accountTypeId = Long.parseLong(queryParams.get("accountTypeId"));
+        }
+
+        if (queryParams.containsKey("active")) {
+            active = Boolean.parseBoolean(queryParams.get("active"));
+        }
+
+        if (queryParams.containsKey("accountName")) {
+            accountName = queryParams.get("accountName");
+        }
+
+        if (queryParams.containsKey("createdDate")) {
+            createdDate = Long.parseLong(queryParams.get("createdDate"));
+        }
+
+        List<Account> accounts = accountRepository.findAllByQueryParams(
+                id, firstName, lastName, accountTypeId, active, accountName, createdDate
+        );
+
+        return accounts.stream()
                 .map(OutgoingAccountDto::new)
                 .collect(Collectors.toList());
     }

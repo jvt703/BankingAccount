@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 public class AccountController {
@@ -31,8 +32,9 @@ public class AccountController {
 
     @GetMapping(path = "/accounts/all", produces = "application/json")
     public List<OutgoingAccountDto> getAllAccounts(
+        @RequestParam Map<String, String> queryParams
     ){
-        return accountService.getAllAccounts();
+        return accountService.getAllAccounts(queryParams);
     }
 
     @GetMapping(path = "/user/{userId}/account/{accountId}", produces = "application/json")
