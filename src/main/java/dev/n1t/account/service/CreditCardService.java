@@ -76,8 +76,8 @@ public class CreditCardService {
                         creditCardApplicationRepository.save(inputCreditCardApplication);
 
                         return new OutgoingApplicationDto(String.format("You have successfully applied for the %s card!", creditCardType.get().getRewardsName()));
-                    } else throw new UserHasAlreadyAppliedForCardOfTypeException(user.get().getId(), creditCardType.get().getId());
-                } else throw new UserAlreadyHasCardOfTypeException(user.get().getId(), creditCardType.get().getId());
+                    } else throw new UserHasAlreadyAppliedForCardOfTypeException(user.get().getId(), creditCardType.get().getRewardsName());
+                } else throw new UserAlreadyHasCardOfTypeException(user.get().getId(), creditCardType.get().getRewardsName());
             } else throw new CreditCardTypeNotFoundException(incomingCreditCardApplicationDto.getCreditCardTypeId());
         } else throw new UserNotFoundException(userId);
     }
