@@ -24,6 +24,33 @@ Example response
 }
 ```
 ### Accounts
+#### GET /accounts/all
+Accepted query parameter filters:
+- id
+- firstName
+- lastName
+- accountTypeId
+- active
+- accountName
+- createdDate (Long as shown below)
+
+Example response
+```json
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "accountTypeName": "Checking",
+        "accountTypeDescription": "General purpose account for everyday expenses",
+        "balance": 5000.0,
+        "confirmation": false,
+        "active": true,
+        "pointsBalance": 0,
+        "accountName": "Checking",
+        "createdDate": 1679478515191
+    }
+]
+```
 #### GET /user/{userId}/accounts (ex. /user/1/accounts)
 Example response
 ```json
@@ -155,6 +182,13 @@ Example response
 }
 ```
 #### GET /creditCardApplications
+Accepted query parameter filters:
+- id
+- firstName
+- lastName
+- approved
+- decisionMade
+
 Example response
 ```json
 [
@@ -227,32 +261,41 @@ Example response
 ```
 ### Loan applications
 #### GET /loanApplications
+Accepted query parameter filters:
+- id
+- firstName
+- lastName
+- approved
+- decisionMade
+
 Example response
 ```json
 [
-    {
-        "loanApplicationId": 1,
-        "loanAmount": 1.0,
-        "userFirstName": "Testathan",
-        "userLastName": "Testman",
-        "userDOB": 981525600000,
-        "userEmailAddress": "test@testing.test",
-        "userAddress": {
-            "id": 1,
-            "city": "Test City",
-            "state": "Iowa",
-            "street": "2000 Test Avenue",
-            "zipCode": "00000"
-        },
-        "socialSecurityNumber": 123123123,
-        "motherMaidenName": "asd",
-        "residenceOwnershipStatus": "RENT",
-        "housingPayment": 1.0,
-        "employmentStatus": "SELF_EMPLOYED",
-        "grossAnnualIncome": 1.0,
-        "approved": false,
-        "decisionDate": null
-    }
+  {
+    "loanApplicationId": 1,
+    "depositAccountId": 1,
+    "depositAccountName": "Checking",
+    "loanAmount": 5000.0,
+    "userFirstName": "Testathan",
+    "userLastName": "Testman",
+    "userDOB": 981525600000,
+    "userEmailAddress": "test@testing.test",
+    "userAddress": {
+      "id": 1,
+      "city": "Test City",
+      "state": "Iowa",
+      "street": "2000 Test Avenue",
+      "zipCode": "00000"
+    },
+    "socialSecurityNumber": 100203000,
+    "motherMaidenName": "susan",
+    "residenceOwnershipStatus": "OWN",
+    "housingPayment": 0.0,
+    "employmentStatus": "EMPLOYED",
+    "grossAnnualIncome": 15000.0,
+    "approved": false,
+    "decisionDate": null
+  }
 ]
 ```
 #### POST /user/{userId}/loanApplication (ex. /user/1/loanApplication)
@@ -290,12 +333,33 @@ Example request body
 Example response
 ```json
 {
-    "applicantFirstName": "Testathan",
-    "applicantLastName": "Testman",
+  "loanApplication": {
+    "loanApplicationId": 1,
+    "depositAccountId": 1,
+    "depositAccountName": "Checking",
     "loanAmount": 5000.0,
-    "debitedAccountName": "Checking",
-    "debitedAccountNewBalance": 5000.0,
-    "approved": true
+    "userFirstName": "Testathan",
+    "userLastName": "Testman",
+    "userDOB": 981525600000,
+    "userEmailAddress": "test@testing.test",
+    "userAddress": {
+      "id": 1,
+      "city": "Test City",
+      "state": "Iowa",
+      "street": "2000 Test Avenue",
+      "zipCode": "00000"
+    },
+    "socialSecurityNumber": 100203000,
+    "motherMaidenName": "susan",
+    "residenceOwnershipStatus": "OWN",
+    "housingPayment": 0.0,
+    "employmentStatus": "EMPLOYED",
+    "grossAnnualIncome": 15000.0,
+    "approved": true,
+    "decisionDate": "2023-03-22T09:48:44.776016208Z"
+  },
+  "debitedAccountName": "Checking",
+  "debitedAccountNewBalance": 5000.0
 }
 ```
 
