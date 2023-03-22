@@ -8,10 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class OutgoingLoanDecisionDto {
-    private String applicantFirstName;
-    private String applicantLastName;
-    private double loanAmount;
+    private OutgoingLoanApplicationDto loanApplication;
     private String debitedAccountName;
     private double debitedAccountNewBalance;
-    private boolean approved;
 }
