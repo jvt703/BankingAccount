@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CreditCardController {
@@ -35,7 +36,7 @@ public class CreditCardController {
     }
 
     @GetMapping("/creditCardApplications")
-    public List<OutgoingCreditCardApplicationDto> getAllCreditCardApplications(){
-        return creditCardService.getAllCreditCardApplications();
+    public List<OutgoingCreditCardApplicationDto> getAllCreditCardApplications(@RequestParam Map<String, String> queryParams){
+        return creditCardService.getAllCreditCardApplications(queryParams);
     }
 }

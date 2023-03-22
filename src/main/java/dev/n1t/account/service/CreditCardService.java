@@ -122,8 +122,38 @@ public class CreditCardService {
         } else throw new CreditCardApplicationNotFoundException(creditCardApplicationId);
     }
 
-    public List<OutgoingCreditCardApplicationDto> getAllCreditCardApplications(){
-        return creditCardApplicationRepository.findAll().stream()
+    public List<OutgoingCreditCardApplicationDto> getAllCreditCardApplications(Map<String, String> queryParams){
+
+        Long id = null;
+        String firstName = null;
+        String lastName = null;
+        Boolean approved = null;
+        Boolean decisionMade = null;
+
+        if (queryParams.containsKey("id")) {
+            id = Long.parseLong(queryParams.get("id"));
+        }
+
+        if (queryParams.containsKey("firstName")) {
+            firstName = queryParams.get("firstName");
+        }
+
+        if (queryParams.containsKey("lastName")) {
+            lastName = queryParams.get("lastName");
+        }
+
+        if (queryParams.containsKey("approved")) {
+            approved = Boolean.parseBoolean(queryParams.get("approved"));
+        }
+
+        if (queryParams.containsKey("decisionMade")) {
+            decisionMade = Boolean.parseBoolean(queryParams.get("decisionMade"));
+        }
+
+        List<CreditCardApplication> creditCardApplications = creditCardApplicationRepository
+                .findAllByQueryParams(id, firstName, lastName, approved, decisionMade);
+
+        return creditCardApplications.stream()
                 .map(OutgoingCreditCardApplicationDto::new)
                 .collect(Collectors.toList());
     }
