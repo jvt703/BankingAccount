@@ -91,7 +91,8 @@ public class LoanService {
                 loanApplicationDetails.setApproved(decisionDto.isApproved());
                 loanApplicationDetails.setDecisionDate(Instant.now());
 
-                System.out.println(loanApplication.get());
+                applicationDetailsRepository.save(loanApplicationDetails);
+
                 return new OutgoingLoanDecisionDto(
                         new OutgoingLoanApplicationDto(loanApplication.get()),
                         loanApplication.get().getDebitedAccount().getAccountName(),
