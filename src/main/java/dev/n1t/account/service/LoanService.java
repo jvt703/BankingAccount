@@ -63,7 +63,6 @@ public class LoanService {
                             .user(loanApplicationDetails.getUser())
                             .balance(loanApplication.get().getRequestedAmount())
                             .active(true)
-                            .confirmation(false)
                             .pointsBalance(0L)
                             .accountName("Loan issued " + Instant.now()
                                     .atZone(ZoneId.systemDefault())

@@ -81,7 +81,7 @@ public class CreditCardService {
             } else throw new CreditCardTypeNotFoundException(incomingCreditCardApplicationDto.getCreditCardTypeId());
         } else throw new UserNotFoundException(userId);
     }
-    public OutgoingCreditCardDecisionDto createCreditCardApplicationDecision(long creditCardApplicationId, IncomingApplicationDecisionDto incomingApplicationDecisionDto){
+    public OutgoingCreditCardApplicationDto createCreditCardApplicationDecision(long creditCardApplicationId, IncomingApplicationDecisionDto incomingApplicationDecisionDto){
         Optional<CreditCardApplication> creditCardApplication = creditCardApplicationRepository.findById(creditCardApplicationId);
 
         if(creditCardApplication.isPresent()){
@@ -94,7 +94,6 @@ public class CreditCardService {
                             .user(creditCardApplication.get().getApplicationDetails().getUser())
                             .balance(0.0)
                             .active(true)
-                            .confirmation(false)
                             .pointsBalance(0L)
                             .accountName(creditCardApplication.get().getCreditCardType().getRewardsName() + " Card")
                             .accountType(accountTypeRepository.findByAccountTypeName("Credit"))
@@ -112,12 +111,7 @@ public class CreditCardService {
                 creditCardApplicationDetails.setDecisionDate(Instant.now());
                 applicationDetailsRepository.save(creditCardApplicationDetails);
 
-                return new OutgoingCreditCardDecisionDto(
-                        creditCardApplicationDetails.getUser().getFirstname(),
-                        creditCardApplicationDetails.getUser().getLastname(),
-                        creditCardApplication.get().getCreditCardType().getRewardsName(),
-                        incomingApplicationDecisionDto.isApproved()
-                );
+                return new OutgoingCreditCardApplicationDto(creditCardApplication.get());
             } else throw new ApplicationDecisionAlreadyMadeException(creditCardApplicationDetails);
         } else throw new CreditCardApplicationNotFoundException(creditCardApplicationId);
     }

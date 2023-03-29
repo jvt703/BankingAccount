@@ -47,7 +47,7 @@ public class OutgoingCreditCardApplicationDto {
         housingPayment = creditCardApplicationDetails.getHousingPayment();
         employmentStatus = creditCardApplicationDetails.getEmploymentStatus();
         grossAnnualIncome = creditCardApplicationDetails.getGrossAnnualIncome();
-        approved = creditCardApplicationDetails.isApproved();
+        approved = creditCardApplicationDetails.getApproved();
         decisionDate = creditCardApplicationDetails.getDecisionDate();
     }
 }

@@ -47,7 +47,7 @@ public class OutgoingLoanApplicationDto {
         housingPayment = loanApplicationDetails.getHousingPayment();
         employmentStatus = loanApplicationDetails.getEmploymentStatus();
         grossAnnualIncome = loanApplicationDetails.getGrossAnnualIncome();
-        approved = loanApplicationDetails.isApproved();
+        approved = loanApplicationDetails.getApproved();
         decisionDate = loanApplicationDetails.getDecisionDate();
     }
 

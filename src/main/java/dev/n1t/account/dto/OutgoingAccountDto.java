@@ -27,8 +27,6 @@ public class OutgoingAccountDto {
         this.accountTypeName = account.getAccountType().getAccountTypeName();
         this.accountTypeDescription = account.getAccountType().getDescription();
         this.balance = account.getBalance();
-        this.confirmation = account.isConfirmation(); //todo: maybe change name so lombok getter name makes sense
-        this.active = account.isActive();
         this.pointsBalance = account.getPointsBalance();
         this.accountName = account.getAccountName();
         this.createdDate = account.getCreatedDate();

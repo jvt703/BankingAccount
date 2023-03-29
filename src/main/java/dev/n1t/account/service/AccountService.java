@@ -83,7 +83,6 @@ public class AccountService {
 
                 account.setBalance(0.0);
                 account.setActive(true);
-                account.setConfirmation(false);
                 account.setPointsBalance(0L);
                 account.setCreatedDate(new Date().getTime());
 
