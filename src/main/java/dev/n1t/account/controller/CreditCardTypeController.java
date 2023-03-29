@@ -23,9 +23,20 @@ public class CreditCardTypeController {
         this.creditCardTypeService = creditCardTypeService;
     }
 
+    //todo: delete the following line
+    @Autowired DummyDataInitializer dummyDataInitializer;
+
     @GetMapping("/creditCardTypes")
     public List<CreditCardType> getCreditCardTypes(){
         return this.creditCardTypeService.getAllCreditCardTypes();
+    }
+
+    @PutMapping("/creditCardType/{creditCardTypeId}")
+    public CreditCardType updateCreditCardType(
+            @PathVariable(value = "creditCardTypeId") long creditCardTypeId,
+            @Validated @RequestBody IncomingCreditCardTypeDto incomingCreditCardTypeDto
+    ){
+        return this.creditCardTypeService.updateCreditCardType(creditCardTypeId, incomingCreditCardTypeDto);
     }
 
     @PostMapping("/creditCardType")
