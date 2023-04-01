@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OutgoingAccountDto {
-    private long id;
+    private Long id;
     private long userId;
 
     private String accountTypeName;
