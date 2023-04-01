@@ -28,7 +28,7 @@ public class CreditCardController {
     }
 
     @PostMapping("/creditCardApplication/{creditCardApplicationId}")
-    public OutgoingCreditCardDecisionDto createCreditCardApplicationDecision(
+    public OutgoingCreditCardApplicationDto createCreditCardApplicationDecision(
             @PathVariable(value = "creditCardApplicationId") long creditCardApplicationId,
             @Validated @RequestBody IncomingApplicationDecisionDto incomingApplicationDecisionDto
     ){
