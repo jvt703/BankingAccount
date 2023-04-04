@@ -55,7 +55,7 @@ public class AccountServiceTest {
         dummyUser = new User(1L, "FirstName", "LastName", "email@example.com", true, "Password", true, System.currentTimeMillis(), dummyAddress, dummyRole);
         dummyAccountType = new AccountType(1L, "AccountTypeName", "Description");
         dummyAccount = new Account(1L, dummyUser, dummyAccountType, 0.0, true, 0L, "AccountName", System.currentTimeMillis());
-        dummyAccountsList = List.of(dummyAccount);
+        dummyAccountsList = Collections.singletonList(dummyAccount);
         dummyUser2 = new User(2L, "AnotherFirstName", "AnotherLastName", "another@example.com", true, "AnotherPassword", true, System.currentTimeMillis(), dummyAddress, dummyRole);
     }
 
@@ -192,7 +192,7 @@ public class AccountServiceTest {
 
         when(accountRepository.findAllByQueryParams(
                 accountId, null, null, null, null, null, null
-        )).thenReturn(Collections.singletonList(dummyAccountsList.get(0)));
+        )).thenReturn(dummyAccountsList);
 
         List<OutgoingAccountDto> accounts = accountService.getAllAccounts(queryParams);
         assertEquals(1, accounts.size());
