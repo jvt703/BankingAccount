@@ -14,93 +14,83 @@ import java.util.Map;
 @Controller
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    public ResponseEntity<Map<String, String>> exceptionResponse(RuntimeException e, HttpStatus status){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return new ResponseEntity<>(response, status);
+    }
+
+    public ResponseEntity<Map<String, String>> notFoundException(RuntimeException e){
+        return exceptionResponse(e, HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<Map<String, String>> conflictException(RuntimeException e){
+        return exceptionResponse(e, HttpStatus.CONFLICT);
+    }
 
     @ResponseBody
     @ExceptionHandler(value = UserNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleUserNotFoundException(UserNotFoundException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return notFoundException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = AccountNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleAccountNotFoundException(AccountNotFoundException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return notFoundException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = AccountTypeNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleAccountTypeNotFoundException(AccountTypeNotFoundException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return notFoundException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = CreditCardTypeNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleCreditCardTypeNotFoundException(CreditCardTypeNotFoundException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return notFoundException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = CreditCardApplicationNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleCreditCardApplicationNotFoundException(CreditCardApplicationNotFoundException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return notFoundException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = LoanApplicationNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleLoanApplicationNotFoundException(LoanApplicationNotFoundException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return notFoundException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = AccountDoesNotBelongToUserException.class)
     public ResponseEntity<Map<String, String>> handleAccountDoesNotBelongToUserException(AccountDoesNotBelongToUserException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return exceptionResponse(e, HttpStatus.FORBIDDEN);
     }
 
     @ResponseBody
     @ExceptionHandler(value = UserAlreadyHasCardOfTypeException.class)
     public ResponseEntity<Map<String, String>> handleUserAlreadyHasCardOfTypeException(UserAlreadyHasCardOfTypeException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        return conflictException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = UserHasAlreadyAppliedForCardOfTypeException.class)
     public ResponseEntity<Map<String, String>> handleUserHasAlreadyAppliedForCardOfTypeException(UserHasAlreadyAppliedForCardOfTypeException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        return conflictException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = ApplicationDecisionAlreadyMadeException.class)
     public ResponseEntity<Map<String, String>> handleApplicationDecisionAlreadyMadeException(ApplicationDecisionAlreadyMadeException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        return conflictException(e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = InvalidDebitedAccountTypeException.class)
     public ResponseEntity<Map<String, String>> handleInvalidDebitedAccountTypeException(InvalidDebitedAccountTypeException e){
-        Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return exceptionResponse(e, HttpStatus.BAD_REQUEST);
     }
-    //todo: refactor repetitive code?
 }
