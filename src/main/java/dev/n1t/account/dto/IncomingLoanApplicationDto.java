@@ -2,11 +2,13 @@ package dev.n1t.account.dto;
 
 import dev.n1t.model.EmploymentStatus;
 import dev.n1t.model.ResidenceOwnershipStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class IncomingLoanApplicationDto {
     private double loanAmount;
     private long debitedAccountId;
