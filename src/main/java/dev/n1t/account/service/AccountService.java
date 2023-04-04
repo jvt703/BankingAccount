@@ -86,11 +86,9 @@ public class AccountService {
                 account.setPointsBalance(0L);
                 account.setCreatedDate(new Date().getTime());
 
-                accountRepository.save(account);
+                return new OutgoingAccountDto(accountRepository.save(account));
             } else throw new AccountTypeNotFoundException(accountRegistrationDto.getAccountTypeId());
         } else throw new UserNotFoundException(userId);
-
-        return new OutgoingAccountDto(account);
     }
 
     public OutgoingAccountDto deleteAccount(long userId, long accountId){
