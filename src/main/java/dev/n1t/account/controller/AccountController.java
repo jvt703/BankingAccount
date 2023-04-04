@@ -5,6 +5,8 @@ import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.service.AccountService;
 import dev.n1t.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,6 @@ public class AccountController {
     }
 
     //get all accounts visible to a user
-    //todo: limit visibility to authorized user
     @GetMapping(path = "/user/{userId}/accounts", produces = "application/json")
     public List<OutgoingAccountDto> getUserAccounts(
             @PathVariable(value = "userId") long userId
@@ -47,11 +48,11 @@ public class AccountController {
 
     //create new account (e.g. checking or savings)
     @PostMapping("/user/{userId}/account")
-    public OutgoingAccountDto createAccount(
+    public ResponseEntity<OutgoingAccountDto> createAccount(
             @PathVariable(value = "userId") long userId,
             @Validated @RequestBody AccountRegistrationDto accountRegistrationDto
     ){
-        return accountService.createAccount(accountRegistrationDto, userId);
+        return new ResponseEntity<>(accountService.createAccount(accountRegistrationDto, userId), HttpStatus.CREATED);
     }
 
     //delete specific account

@@ -1,15 +1,14 @@
 package dev.n1t.account.controller;
 
-import dev.n1t.account.dto.IncomingAccountTypeDto;
 import dev.n1t.account.dto.IncomingCreditCardTypeDto;
 import dev.n1t.account.service.CreditCardTypeService;
+import dev.n1t.account.service.DummyDataInitializer;
 import dev.n1t.model.CreditCardType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,8 +39,8 @@ public class CreditCardTypeController {
     }
 
     @PostMapping("/creditCardType")
-    public CreditCardType createCreditCardType(@Validated @RequestBody IncomingCreditCardTypeDto incomingCreditCardTypeDto){
-        return this.creditCardTypeService.createCreateCreditCardType(incomingCreditCardTypeDto);
+    public ResponseEntity<CreditCardType> createCreditCardType(@Validated @RequestBody IncomingCreditCardTypeDto incomingCreditCardTypeDto){
+        return new ResponseEntity<>(this.creditCardTypeService.createCreateCreditCardType(incomingCreditCardTypeDto), HttpStatus.CREATED);
     }
 
 }

@@ -3,6 +3,8 @@ package dev.n1t.account.controller;
 import dev.n1t.account.dto.*;
 import dev.n1t.account.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +22,19 @@ public class CreditCardController {
     }
 
     @PostMapping("/user/{userId}/creditCardApplication")
-    public OutgoingApplicationDto createCreditCardApplication(
+    public ResponseEntity<OutgoingApplicationDto> createCreditCardApplication(
         @Validated @RequestBody IncomingCreditCardApplicationDto incomingCreditCardApplicationDto,
         @PathVariable(value = "userId") long userId
     ){
-        return creditCardService.createCreditCardApplication(incomingCreditCardApplicationDto, userId);
+        return new ResponseEntity<>(creditCardService.createCreditCardApplication(incomingCreditCardApplicationDto, userId), HttpStatus.CREATED);
     }
 
     @PostMapping("/creditCardApplication/{creditCardApplicationId}")
-    public OutgoingCreditCardApplicationDto createCreditCardApplicationDecision(
+    public ResponseEntity<OutgoingCreditCardApplicationDto> createCreditCardApplicationDecision(
             @PathVariable(value = "creditCardApplicationId") long creditCardApplicationId,
             @Validated @RequestBody IncomingApplicationDecisionDto incomingApplicationDecisionDto
     ){
-        return creditCardService.createCreditCardApplicationDecision(creditCardApplicationId, incomingApplicationDecisionDto);
+        return new ResponseEntity<>(creditCardService.createCreditCardApplicationDecision(creditCardApplicationId, incomingApplicationDecisionDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/creditCardApplications")
