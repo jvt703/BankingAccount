@@ -15,7 +15,6 @@ public class OutgoingAccountDto {
     private String accountTypeDescription;
 
     private double balance;
-    private boolean confirmation;
     private boolean active;
     private long pointsBalance;
     private String accountName;
@@ -26,6 +25,7 @@ public class OutgoingAccountDto {
         this.userId = account.getUser().getId();
         this.accountTypeName = account.getAccountType().getAccountTypeName();
         this.accountTypeDescription = account.getAccountType().getDescription();
+        this.active = account.getActive();
         this.balance = account.getBalance();
         this.pointsBalance = account.getPointsBalance();
         this.accountName = account.getAccountName();
