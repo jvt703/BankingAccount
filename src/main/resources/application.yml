@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: account-service
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,10 +17,16 @@ spring:
     #password: bankapp
     #driver-class-name: com.mysql.cj.jdbc.Driver
 
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka/
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
