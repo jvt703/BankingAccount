@@ -2,7 +2,7 @@ package dev.n1t.account.controller;
 
 import dev.n1t.account.dto.IncomingCreditCardTypeDto;
 import dev.n1t.account.service.CreditCardTypeService;
-import dev.n1t.account.service.DummyDataInitializer;
+//import dev.n1t.account.service.DummyDataInitializer;
 import dev.n1t.model.CreditCardType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class CreditCardTypeController {
     }
 
     //todo: delete the following line
-    @Autowired DummyDataInitializer dummyDataInitializer;
+//    @Autowired DummyDataInitializer dummyDataInitializer;
 
     @GetMapping("/creditCardTypes")
     public List<CreditCardType> getCreditCardTypes(){
