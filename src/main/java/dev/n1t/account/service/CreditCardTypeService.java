@@ -1,6 +1,5 @@
 package dev.n1t.account.service;
 
-import dev.n1t.account.dto.IncomingAccountTypeDto;
 import dev.n1t.account.dto.IncomingCreditCardTypeDto;
 import dev.n1t.account.exception.CreditCardTypeNotFoundException;
 import dev.n1t.account.repository.CreditCardTypeRepository;
