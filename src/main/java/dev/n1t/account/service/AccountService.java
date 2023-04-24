@@ -73,18 +73,17 @@ public class AccountService {
         Optional<AccountType> accountType = accountTypeRepository.findById(accountRegistrationDto.getAccountTypeId());
         Optional<User> user = userRepository.findById(userId);
 
-        Account account = new Account();
-
         if(user.isPresent()){
             if(accountType.isPresent()){
-                account.setAccountName(accountRegistrationDto.getAccountName());
-                account.setAccountType(accountType.get());
-                account.setUser(user.get());
-
-                account.setBalance(0.0);
-                account.setActive(true);
-                account.setPointsBalance(0L);
-                account.setCreatedDate(new Date().getTime());
+                Account account = Account.builder()
+                                .accountName(accountRegistrationDto.getAccountName())
+                                .accountType(accountType.get())
+                                .user(user.get())
+                                .balance(0.0)
+                                .active(true)
+                                .pointsBalance(0L)
+                                .createdDate(new Date().getTime())
+                                .build();
 
                 return new OutgoingAccountDto(accountRepository.save(account));
             } else throw new AccountTypeNotFoundException(accountRegistrationDto.getAccountTypeId());
