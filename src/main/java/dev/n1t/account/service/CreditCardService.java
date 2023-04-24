@@ -4,6 +4,7 @@ import dev.n1t.account.dto.*;
 import dev.n1t.account.exception.*;
 import dev.n1t.account.repository.*;
 import dev.n1t.model.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,7 @@ public class CreditCardService {
         this.creditDetailRepository = creditDetailRepository;
     }
 
+    @Transactional
     public OutgoingApplicationDto createCreditCardApplication(IncomingCreditCardApplicationDto incomingCreditCardApplicationDto, long userId){
         Optional<CreditCardType> creditCardType = creditCardTypeRepository.findById(incomingCreditCardApplicationDto.getCreditCardTypeId());
         Optional<User> user = userRepository.findById(userId);
@@ -81,6 +83,8 @@ public class CreditCardService {
             } else throw new CreditCardTypeNotFoundException(incomingCreditCardApplicationDto.getCreditCardTypeId());
         } else throw new UserNotFoundException(userId);
     }
+
+    @Transactional
     public OutgoingCreditCardApplicationDto createCreditCardApplicationDecision(long creditCardApplicationId, IncomingApplicationDecisionDto incomingApplicationDecisionDto){
         Optional<CreditCardApplication> creditCardApplication = creditCardApplicationRepository.findById(creditCardApplicationId);
 
