@@ -4,6 +4,7 @@ import dev.n1t.account.dto.*;
 import dev.n1t.account.exception.*;
 import dev.n1t.account.repository.*;
 import dev.n1t.model.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,6 @@ public class LoanService {
     private final AccountTypeRepository accountTypeRepository;
     private final LoanDetailRepository loanDetailRepository;
 
-    //get list of loan applications
-    //get list of credit card applications
-
     @Autowired
     public LoanService(
             ApplicationDetailsRepository applicationDetailsRepository,
@@ -47,6 +45,7 @@ public class LoanService {
         this.loanDetailRepository = loanDetailRepository;
     }
 
+    @Transactional
     public OutgoingLoanDecisionDto createLoanApplicationDecision(long applicationId,  IncomingApplicationDecisionDto decisionDto){
         Optional<LoanApplication> loanApplication = loanApplicationRepository.findById(applicationId);
 
@@ -101,6 +100,7 @@ public class LoanService {
         } else throw new LoanApplicationNotFoundException(applicationId);
     }
 
+    @Transactional
     public OutgoingApplicationDto createLoanApplication(long userId, IncomingLoanApplicationDto incomingLoanApplicationDto){
         Optional<User> user =  userRepository.findById(userId);
         Optional<Account> debitedAccount = accountRepository.findById(incomingLoanApplicationDto.getDebitedAccountId());
