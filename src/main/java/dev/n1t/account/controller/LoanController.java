@@ -29,7 +29,7 @@ public class LoanController {
         return new ResponseEntity<>(loanService.createLoanApplication(userId, incomingLoanApplicationDto), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "loanApplications", produces = "application/json")
+    @GetMapping(path = "/loanApplications", produces = "application/json")
     public List<OutgoingLoanApplicationDto> getAllLoanApplications(@RequestParam Map<String, String> queryParams){
         return loanService.getAllLoanApplications(queryParams);
     }
