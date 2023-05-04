@@ -24,7 +24,7 @@ public class OutgoingLoanApplicationDto {
     private double housingPayment;
     private EmploymentStatus employmentStatus;
     private double grossAnnualIncome;
-    private boolean approved;
+    private Boolean approved;
     private Instant decisionDate;
 
     public OutgoingLoanApplicationDto(LoanApplication loanApplication){
