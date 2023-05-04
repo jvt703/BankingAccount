@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CreditCardTypeRepository extends CrudRepository<CreditCardType, Long> {
     List<CreditCardType> findAll();
+    List<CreditCardType> findAllBySignUpEnabled(boolean signUpEnabled);
 }
