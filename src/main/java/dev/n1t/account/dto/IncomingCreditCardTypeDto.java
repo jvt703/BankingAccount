@@ -5,11 +5,13 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class IncomingCreditCardTypeDto { //todo: limit access to admins only
+public class IncomingCreditCardTypeDto {
     private String rewardsName;
     private double interestRate;
     private double minimumPayment;
     private double creditLimit;
+
+    private boolean signUpEnabled;
 
 }
 
