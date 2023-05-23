@@ -32,16 +32,18 @@ public class AccountService {
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final AccountTypeRepository accountTypeRepository;
-
+    private final EmailServiceImpl emailService;
     @Autowired
     public AccountService(
             UserRepository userRepository,
             AccountRepository accountRepository,
-            AccountTypeRepository accountTypeRepository
+            AccountTypeRepository accountTypeRepository,
+            EmailServiceImpl emailService
     ){
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
         this.accountTypeRepository = accountTypeRepository;
+        this.emailService = emailService;
     }
 
     public List<OutgoingAccountDto> getAccountsByUserId(long userId){
@@ -72,7 +74,7 @@ public class AccountService {
     public OutgoingAccountDto createAccount(@NotNull AccountRegistrationDto accountRegistrationDto, Long userId){
         Optional<AccountType> accountType = accountTypeRepository.findById(accountRegistrationDto.getAccountTypeId());
         Optional<User> user = userRepository.findById(userId);
-
+//changed active to false on creation so that we send email to confirm active before we can change things
         if(user.isPresent()){
             if(accountType.isPresent()){
                 Account account = Account.builder()
@@ -80,12 +82,15 @@ public class AccountService {
                                 .accountType(accountType.get())
                                 .user(user.get())
                                 .balance(0.0)
-                                .active(true)
+                                .active(false)
                                 .pointsBalance(0L)
                                 .createdDate(new Date().getTime())
                                 .build();
-
-                return new OutgoingAccountDto(accountRepository.save(account));
+//also need to send email here with the account id link
+                Account savedAccount = accountRepository.save(account);
+                String link = String.format("http://localhost:8081/account/%s/activation?active=true", savedAccount.getId());
+                 emailService.sendConfirmationEmail(user.get().getEmail(),link);
+                return new OutgoingAccountDto(savedAccount);
             } else throw new AccountTypeNotFoundException(accountRegistrationDto.getAccountTypeId());
         } else throw new UserNotFoundException(userId);
     }
@@ -156,11 +161,11 @@ public class AccountService {
 
     public OutgoingAccountDto updateAccountActivationStatus(
             long accountId,
-            IncomingAccountActivationDto accountActivationDto
+            boolean active
     ){
         Optional<Account> account = accountRepository.findById(accountId);
         if(account.isPresent()){
-            account.get().setActive(accountActivationDto.isActive());
+            account.get().setActive(active);
 
             accountRepository.save(account.get());
 

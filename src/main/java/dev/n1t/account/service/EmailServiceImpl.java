@@ -29,4 +29,28 @@ public class EmailServiceImpl {
             System.out.printf("An email could not be sent to %s%n", subject);
         }
     }
+    public void sendConfirmationEmail(String to, String confirmationLink) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            String subject = "Account Confirmation";
+
+            // Generate the HTML content with the button
+            String htmlContent = "<html><body>"
+                    + "<p>Please click the button below to activate your account:</p>"
+                    + "<a href=\"" + confirmationLink + "\">Activate Account</a>"
+                    + "</body></html>";
+
+
+            helper.setFrom(new InternetAddress("ninetenemailserver@gmail.com", "NineTen Bank"));
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true); // Set HTML content to true
+
+            emailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            System.out.printf("An email could not be sent to %s%n", to);
+        }
+    }
 }

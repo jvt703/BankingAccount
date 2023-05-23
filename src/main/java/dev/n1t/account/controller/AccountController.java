@@ -3,9 +3,12 @@ import dev.n1t.account.dto.AccountRegistrationDto;
 import dev.n1t.account.dto.IncomingAccountActivationDto;
 import dev.n1t.account.dto.OutgoingAccountDto;
 import dev.n1t.account.service.AccountService;
+import dev.n1t.account.service.DummyDataInitializer;
 import dev.n1t.model.Account;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +20,11 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService accountService;
-
+    private final DummyDataInitializer dummyDataInitializer;
     @Autowired
-    public AccountController(AccountService accountService){
+    public AccountController(AccountService accountService, DummyDataInitializer dummyDataInitializer){
         this.accountService = accountService;
+        this.dummyDataInitializer = dummyDataInitializer;
     }
 
     //get all accounts visible to a user
@@ -64,12 +68,22 @@ public class AccountController {
         return accountService.deleteAccount(userId, accountId);
     }
 
-    @PutMapping("/account/{accountId}/activation")
+//    @PutMapping(path = "/account/{accountId}/activation", consumes = "application/json")
+//    public OutgoingAccountDto updateAccountActivationStatus(
+//            @PathVariable(value = "accountId") long accountId,
+//            @Valid @RequestBody IncomingAccountActivationDto accountActivationDto
+//    ){
+//        return accountService.updateAccountActivationStatus(accountId, accountActivationDto);
+//    }
+    @GetMapping(path = "/account/{accountId}/activation", produces = "application/json")
     public OutgoingAccountDto updateAccountActivationStatus(
             @PathVariable(value = "accountId") long accountId,
-            @Validated @RequestBody IncomingAccountActivationDto accountActivationDto
+            @RequestParam(value = "active") boolean active
     ){
-        return accountService.updateAccountActivationStatus(accountId, accountActivationDto);
+        // Logic to update the account activation status based on the 'active' query parameter
+
+        // Return the updated account DTO
+        return accountService.updateAccountActivationStatus(accountId, active);
     }
 
 }
