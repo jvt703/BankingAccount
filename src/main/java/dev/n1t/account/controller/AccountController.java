@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,41 +30,56 @@ public class AccountController {
 
     //get all accounts visible to a user
     @GetMapping(path = "/user/{userId}/accounts", produces = "application/json")
+    @PreAuthorize("(#Role.equals('User') and #userId == #requestId) or (#Role.equals('admin'))")
     public List<OutgoingAccountDto> getUserAccounts(
-            @PathVariable(value = "userId") long userId
+            @PathVariable(value = "userId") long userId,
+            @RequestHeader("Role") String Role,
+            @RequestHeader("id") Long requestId
     ){
         return accountService.getAccountsByUserId(userId);
     }
 
     @GetMapping(path = "/accounts/all", produces = "application/json")
+    @PreAuthorize("((#Role.equals('admin'))")
     public List<OutgoingAccountDto> getAllAccounts(
-        @RequestParam Map<String, String> queryParams
+        @RequestParam Map<String, String> queryParams,
+        @RequestHeader("Role") String Role
     ){
         return accountService.getAllAccounts(queryParams);
     }
 
     @GetMapping(path = "/user/{userId}/account/{accountId}", produces = "application/json")
+    @PreAuthorize("(#Role.equals('User') and #userId == #requestId) or (#Role.equals('admin'))")
     public OutgoingAccountDto getUserAccount(
             @PathVariable(value = "userId") long userId,
-            @PathVariable(value = "accountId") long accountId
+            @PathVariable(value = "accountId") long accountId,
+            @RequestHeader("Role") String Role,
+            @RequestHeader("id") Long requestId
     ){
         return accountService.getAccount(userId, accountId);
     }
 
     //create new account (e.g. checking or savings)
+
     @PostMapping("/user/{userId}/account")
+    @PreAuthorize("(#Role.equals('User') and #userId == #requestId) or (#Role.equals('admin'))")
     public ResponseEntity<OutgoingAccountDto> createAccount(
             @PathVariable(value = "userId") long userId,
-            @Validated @RequestBody AccountRegistrationDto accountRegistrationDto
+            @Validated @RequestBody AccountRegistrationDto accountRegistrationDto,
+            @RequestHeader("Role") String Role,
+            @RequestHeader("id") Long requestId
     ){
         return new ResponseEntity<>(accountService.createAccount(accountRegistrationDto, userId), HttpStatus.CREATED);
     }
 
     //delete specific account
     @DeleteMapping("/user/{userId}/account/{accountId}")
+    @PreAuthorize("(#Role.equals('User') and #userId == #requestId) or (#Role.equals('admin'))")
     public OutgoingAccountDto deleteAccount(
             @PathVariable(value = "userId") long userId,
-            @PathVariable(value = "accountId") long accountId
+            @PathVariable(value = "accountId") long accountId,
+            @RequestHeader("Role") String Role,
+            @RequestHeader("id") Long requestId
     ) {
         return accountService.deleteAccount(userId, accountId);
     }
@@ -78,12 +94,13 @@ public class AccountController {
     @GetMapping(path = "/account/{accountId}/activation", produces = "application/json")
     public OutgoingAccountDto updateAccountActivationStatus(
             @PathVariable(value = "accountId") long accountId,
-            @RequestParam(value = "active") boolean active
+            @RequestParam(value = "active") boolean active,
+            @RequestHeader("id") Long requestId
     ){
         // Logic to update the account activation status based on the 'active' query parameter
 
         // Return the updated account DTO
-        return accountService.updateAccountActivationStatus(accountId, active);
+        return accountService.updateAccountActivationStatus(accountId, active, requestId);
     }
 
 }

@@ -1,27 +1,34 @@
 pipeline {
     agent any
+    environment {
+        registry = 'ninetenbank/ninetenaccount'
+        dockerImage = ''
+        registryCredential = 'Dockerhub'
 
+    }
     stages {
-        stage('Build') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build with Maven') {
             steps {
                 sh 'mvn clean install'
             }
         }
-
-
-        stage('Docker Build') {
-            steps {
+        stage('Building image') {
+            steps{
                 script {
-                    sh 'docker build -t blazervincent/account-microservice .'
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
-
-        stage('Docker Push') {
+        stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials-id') {
-                        sh 'docker push blazervincent/account-microservice'
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
                     }
                 }
             }

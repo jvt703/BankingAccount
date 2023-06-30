@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class OutgoingLoanDecisionDto {
+public class    OutgoingLoanDecisionDto {
     private OutgoingLoanApplicationDto loanApplication;
     private String debitedAccountName;
     private double debitedAccountNewBalance;

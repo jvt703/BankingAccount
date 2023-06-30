@@ -161,16 +161,22 @@ public class AccountService {
 
     public OutgoingAccountDto updateAccountActivationStatus(
             long accountId,
-            boolean active
+            boolean active,
+            long requestId
     ){
         Optional<Account> account = accountRepository.findById(accountId);
-        if(account.isPresent()){
+        if(account.isPresent()) {
+            if (account.get().getUser().getId().equals(requestId)) {
+
             account.get().setActive(active);
 
             accountRepository.save(account.get());
 
-            return new OutgoingAccountDto(account.get());
+
+        }
         } else throw new AccountNotFoundException(accountId);
+        return new OutgoingAccountDto(account.get());
     }
+
 
 }
