@@ -2,6 +2,7 @@ package dev.n1t.account.controller;
 import dev.n1t.account.dto.AccountRegistrationDto;
 import dev.n1t.account.dto.IncomingAccountActivationDto;
 import dev.n1t.account.dto.OutgoingAccountDto;
+import dev.n1t.account.dto.OutgoingAccountEmailDto;
 import dev.n1t.account.service.AccountService;
 import dev.n1t.account.service.DummyDataInitializer;
 import dev.n1t.model.Account;
@@ -40,12 +41,28 @@ public class AccountController {
     }
 
     @GetMapping(path = "/accounts/all", produces = "application/json")
-    @PreAuthorize("((#Role.equals('admin'))")
-    public List<OutgoingAccountDto> getAllAccounts(
+        @PreAuthorize("((#Role.equals('admin'))")
+        public List<OutgoingAccountDto> getAllAccounts(
         @RequestParam Map<String, String> queryParams,
+
         @RequestHeader("Role") String Role
     ){
-        return accountService.getAllAccounts(queryParams);
+
+        List<OutgoingAccountDto> OutgoingList = accountService.getAllAccounts(queryParams);
+
+        return OutgoingList;
+
+    }
+    @GetMapping(path = "/accounts/all/admin", produces = "application/json")
+//        @PreAuthorize("((#Role.equals('admin'))")
+    public List<OutgoingAccountEmailDto> getAllAccountsAdmin(
+            @RequestParam Map<String, String> queryParams
+
+//        @RequestHeader("Role") String Role
+    ){
+        List<OutgoingAccountEmailDto> OutgoingList = accountService.getAllAccountsAdmin(queryParams);
+        return OutgoingList;
+
     }
 
     @GetMapping(path = "/user/{userId}/account/{accountId}", produces = "application/json")
